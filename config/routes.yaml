@@ -2,8 +2,8 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-connexion:
-    path: /connexion
+accueil:
+    path: /accueil
     controller: App\Controller\ConnexionController::index
 
 connecter:
