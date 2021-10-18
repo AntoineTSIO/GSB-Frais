@@ -4,17 +4,43 @@
 
 {% block body %}
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    html,
+    body{
+        height: 100%;
+    }
+    #cover{
+        background: #255 center center no-repeat;
+        background-size: cover;
+        color: white;
+        height: 100%;
+        text-align: center;
+        display: flex;
+        align-items: center;
+    }
+    #cover-caption{
+        width: 100%;
+    }
 </style>
-
-<div class="example-wrapper">
-    <h1>Connexion</h1>
-
-    <form action="connecter" method="post">
-        <p>Identifiant : <input type="text" name="login" /></p>
-        <p> Mot de Passe : <input type="password" name="mdp" /></p>
-        <p><input type="submit" value="Se Connecter"></p>
-    </form>
-</div>
+<section id="cover">
+    <div id="cover-caption">
+        <div id="container">
+            <div class="col-sm-10 offset-sm-1 text-center">
+                <h1 class="display-3">Bienvenue sur Galaxy Swiss Bourdin</h1>
+                <div class="info-form">
+                    <form class="form-inline" action="connecter" method="post">
+                        <div class="form-group">
+                            <label>Identifiant :</label>
+                            <input type="text" name="login">
+                        </div>
+                        <div class="form-group">
+                            <label>Mot de Passe :</label>
+                            <input type="password" name="mdp">
+                        </div>
+                        <button type="submit" class="btn btn-success">Connexion</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
