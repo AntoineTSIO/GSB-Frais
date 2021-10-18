@@ -1,0 +1,11 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+
+connexion:
+    path: /connexion
+    controller: App\Controller\ConnexionController::index
+
+connecter:
+    path: /connecter
+    controller: App\Controller\ConnexionController::connecter
