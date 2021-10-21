@@ -52,5 +52,13 @@ class ConnexionController extends AbstractController
         }
         return $this->redirect('/accueil');    
     }
+
+    public function deconnexion(Request $request): Response
+    {
+        $session = $request->getSession();
+        $session -> clear();
+
+        return $this->redirect('/accueil');
+    }
 }
 ?>

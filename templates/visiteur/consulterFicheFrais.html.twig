@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Visiteur {% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/visiteur">
+        <h5>GSB Frais</h5>
+    </a>
+    <span class="navbar-header text-center">
+      <h3>Espace Visiteur</h3>
+      <h7>Consulter Fiches de Frais</h7>
+    </span>
+    <span class="navbar-text" id="deconnexion">
+      <h5>{{app.session.get('prenom')}} {{app.session.get('nom')}}</h5>
+    </span>
+  </div>
+</nav>
+
+{% if ficheFrais is empty %}
+
+<div class="col-sm d-grip gap-2 col-6 mx-auto" style="margin-top: 75px;">
+    <div class="alert alert-danger" role="alert">
+        <p> Aucune fiche de frais n'est renseignée pour cette date donnée.</p>
+        <script type="text/javascript">
+            var duree = 5;
+            function decompte()
+            {
+                if(duree <= 1){
+                    var suffixe = " seconde";
+                }else{
+                    var suffixe = " secondes";
+                }
+                document.getElementById("decompte").innerHTML= "Vous allez être rediriger vers la page précédente dans " + duree + suffixe;
+                duree -= 1;
+                setTimeout("decompte();", 1000);
+                if(duree == -1){
+                    document.location.href="/visiteur";
+                }
+            }
+        </script>
+        <p id="decompte"><script type="text/javascript"> decompte() </script></p>
+    </div>
+</div>
+
+{% else %}
+
+<table style="border: solid; margin-right: auto; margin-left: auto">
+    <thead>
+        <tr style="background-color: #333; color: #fff;">
+            <th style="border: 1px solid #333">mois</th>
+            <th style="border: 1px solid #333">nombre justificatifs</th>
+            <th style="border: 1px solid #333">montant valide</th>
+            <th style="border: 1px solid #333">date de modification</th>
+            <th style="border: 1px solid #333">etat</th>
+        </tr>
+
+    </thead>
+    <tr>
+        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][1] }}</td>
+        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][2] }}</td>
+        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][3] }}</td>
+        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][4] }}</td>
+        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][5] }}</td>
+    </tr>
+
+</table>
+
+{% endif %}
+
+{% endblock %}

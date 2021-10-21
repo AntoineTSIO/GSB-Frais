@@ -9,3 +9,15 @@ accueil:
 connecter:
     path: /connecter
     controller: App\Controller\ConnexionController::connecter
+
+visiteur:
+    path: /visiteur
+    controller: App\Controller\VisiteurController::index
+
+deconnexion:
+    path: /deconnexion
+    controller: App\Controller\ConnexionController::deconnexion
+
+consulterFicheFrais:
+    path: /visiteur/consulterFicheFrais
+    controller: App\Controller\VisiteurController::consulterFicheFrais
