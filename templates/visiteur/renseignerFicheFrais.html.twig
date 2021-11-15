@@ -1,0 +1,136 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Visiteur {% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/visiteur">
+        <h5>GSB Frais</h5>
+    </a>
+    <span class="navbar-header text-center">
+      <h3>Espace Visiteur</h3>
+      <h7>renseigner Fiches de Frais</h7>
+    </span>
+    <span class="navbar-text" id="deconnexion">
+      <h5>{{app.session.get('prenom')}} {{app.session.get('nom')}}</h5>
+    </span>
+  </div>
+</nav>
+
+{% if ligneFraisForfait is empty and ligneFraisHorsForfait is empty %}
+
+    <button id="debutQuestionnaire" type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#ajouterFrais">
+        Ajouter frais
+    </button>
+
+{% else %}
+
+<table style="border: solid; margin-right: auto; margin-left: auto">
+    <thead>
+        <tr style="background-color: #333; color: #fff;">
+            <th style="border: 1px solid #333">mois</th>
+            <th style="border: 1px solid #333">nombre justificatifs</th>
+            <th style="border: 1px solid #333">montant valide</th>
+            <th style="border: 1px solid #333">date de modification</th>
+            <th style="border: 1px solid #333">etat</th>
+        </tr>
+
+    </thead>
+    <tr>
+        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][1] }}</td>
+        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][2] }}</td>
+        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][3] }}</td>
+        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][4] }}</td>
+        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][5] }}</td>
+    </tr>
+
+</table>
+
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="ajouterFrais" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ajouterFraisLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titreModal">Ajouter une fiche de frais</h5>
+      </div>
+      <div class="modal-body">
+        <form method='POST' action="visiteur/renseignerFicheFrais">
+            <select name="TypeFrais">
+                <option id="supLigne" checked value='00'>-- Choisissez un type de frais --</option>
+                <option id="afficherLigneForfaitETP" value="ETP">Forfait Etape</option>
+                <option id="afficherLigneForfaitKM" value="KM">Frais Kilométrique</option>
+                <option id="afficherLigneForfaitNUI" value="NUI">Nuitée Hôtel</option>
+                <option id="afficherLigneForfaitREP" value="REP">Repas Restaurant</option>
+                <option id="afficherLigneHorsForfait" value="AUT">Autre</option>
+            </select>
+            <div id="qstFraisForfait">
+              <input type='number' name='mois' placeholder='Entrez le mois' > 
+              <br>
+              <input type='number' name='quantité' placeholder='Entrez la quantité' >
+            </div>
+            
+            <div id="qstFraisHorsForfait">
+              <input type='text' name='libelle' placeholder='Entrez le libelle' >
+              <br>
+              <input type='date' name='date' placeholder='Entrez la date' >
+              <br>
+              <input type='number' name='montant' placeholder='Entrez le montant' >
+            </div>
+            
+            <script>
+            function supQuestionnaireForfait(){
+                if(getComputedStyle(qstFraisForfait).display != "none"){
+                  qstFraisForfait.style.display= "none";
+                  }
+                if(getComputedStyle(qstFraisHorsForfait).display != "none"){
+                    qstFraisHorsForfait.style.display= "none";
+                  }
+                  var ligneFraisForfaitAfficher = 1;
+                  var ligneFraisHorsForfaitAfficher = 1;
+              }
+              debutQuestionnaire.onclick= supQuestionnaireForfait;
+              supLigne.onclick = supQuestionnaireForfait;         
+              
+              function ligneFraisForfait(){
+                if(getComputedStyle(qstFraisHorsForfait).display != "none"){
+                    qstFraisHorsForfait.style.display= "none";
+                  }
+                if(getComputedStyle(qstFraisForfait).display != "none" && ligneFraisForfaitAfficher ===1){
+                  qstFraisForfait.style.display= "none";
+                }else{
+                  qstFraisForfait.style.display= "block";
+                }  
+              }
+              afficherLigneForfaitETP.onclick= ligneFraisForfait;
+              afficherLigneForfaitKM.onclick= ligneFraisForfait;
+              afficherLigneForfaitNUI.onclick= ligneFraisForfait;
+              afficherLigneForfaitREP.onclick= ligneFraisForfait;
+
+              function ligneFraisHorsForfait(){
+                if(getComputedStyle(qstFraisForfait).display != "none"){
+                    qstFraisForfait.style.display= "none";
+                  }
+                if(getComputedStyle(qstFraisHorsForfait).display != "none" && ligneFraisHorsForfaitAfficher === 1){
+                  qstFraisHorsForfait.style.display= "none";
+                }else{
+                  qstFraisHorsForfait.style.display= "block";
+                }
+              }
+              afficherLigneHorsForfait.onclick= ligneFraisHorsForfait;
+              
+            </script>
+            
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <input type="submit" class="btn btn-primary" value="Valider">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

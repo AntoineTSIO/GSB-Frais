@@ -21,3 +21,7 @@ deconnexion:
 consulterFicheFrais:
     path: /visiteur/consulterFicheFrais
     controller: App\Controller\VisiteurController::consulterFicheFrais
+
+renseignerFicheFrais:
+    path: /visiteur/renseignerFicheFrais
+    controller: App\Controller\VisiteurController::renseignerFicheFrais

@@ -34,7 +34,7 @@ class ConnexionController extends AbstractController
                 $session->set('login', $visiteur->getLogin());
                 $session->set('nom', $visiteur->getNom());
                 $session->set('prenom', $visiteur->getPrenom());
-                $session->set('idVisteur', $visiteur->getId());
+                $session->set('idVisiteur', $visiteur->getId());
                 return $this->redirect('/visiteur');
             }
         }
