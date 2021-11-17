@@ -25,27 +25,67 @@
     </button>
 
 {% else %}
+<div style="display: flex;
+  align-items: center;
+  justify-content: center;">
+  <h3 style="width: 50%; text-align: center;">Fiche Frais Forfait</h3>
+  <h3 style="width: 50%; text-align: center;">Fiche Frais Hors Forfait</h3>
+</div>
+<div style ="display: flex;
+  justify-content: center;">
+<div style="width: 50%;">
+<div style="justify-content: center;">
+  {% if ligneFraisForfait is not empty %}
+  {% for i in 0..(ligneFraisForfait|length)-1 %}
 
-<table style="border: solid; margin-right: auto; margin-left: auto">
-    <thead>
-        <tr style="background-color: #333; color: #fff;">
-            <th style="border: 1px solid #333">mois</th>
-            <th style="border: 1px solid #333">nombre justificatifs</th>
-            <th style="border: 1px solid #333">montant valide</th>
-            <th style="border: 1px solid #333">date de modification</th>
-            <th style="border: 1px solid #333">etat</th>
-        </tr>
+  <table style="border: solid; margin:0 auto auto auto; width: 70%; text-align: center;">
+      <thead>
+          <tr style="background-color: #333; color: #fff;">
+              <th style="border: 1px solid #333">mois</th>
+              <th style="border: 1px solid #333">id Forfait</th>
+              <th style="border: 1px solid #333">quantité</th>
+          </tr>
+      </thead>
+      <tr>
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisForfait[i][1] }}</td>
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisForfait[i][2] }}</td>
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisForfait[i][3] }}</td>
+      </tr>
+  </table>
+    <br>
+  {% endfor %}
+  {% endif %}
+  </div>
+</div>
+<div style="width: 50%;">
+  {% if ligneFraisHorsForfait is not empty %}
+  {% for i in 0..(ligneFraisHorsForfait|length)-1 %}
 
-    </thead>
-    <tr>
-        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][1] }}</td>
-        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][2] }}</td>
-        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][3] }}</td>
-        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][4] }}</td>
-        <td style="border: 1px solid #333;text-align: center;">{{ ficheFrais[0][5] }}</td>
-    </tr>
-
-</table>
+  <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
+      <thead>
+          <tr style="background-color: #333; color: #fff;">
+              <th style="border: 1px solid #333">mois</th>
+              <th style="border: 1px solid #333">libelle</th>
+              <th style="border: 1px solid #333">date</th>
+              <th style="border: 1px solid #333">montant</th>  
+          </tr>
+      </thead>
+      <tr>
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait[i][2] }}</td>
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait[i][3] }}</td>
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait[i][4] }}</td>
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait[i][5] }}</td>
+      </tr>
+  </table>
+    <br>
+  {% endfor %}
+  {% endif %}
+</div>
+</div>
+  <br>
+    <button id="debutQuestionnaire" type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#ajouterFrais">
+        Ajouter frais
+    </button>
 
 {% endif %}
 
@@ -57,7 +97,7 @@
         <h5 class="modal-title" id="titreModal">Ajouter une fiche de frais</h5>
       </div>
       <div class="modal-body">
-        <form method='POST' action="visiteur/renseignerFicheFrais">
+        <form method='POST' action="../visiteur/renseignerFicheFrais">
             <select name="TypeFrais">
                 <option id="supLigne" checked value='00'>-- Choisissez un type de frais --</option>
                 <option id="afficherLigneForfaitETP" value="ETP">Forfait Etape</option>
@@ -67,15 +107,14 @@
                 <option id="afficherLigneHorsForfait" value="AUT">Autre</option>
             </select>
             <div id="qstFraisForfait">
-              <input type='number' name='mois' placeholder='Entrez le mois' > 
-              <br>
-              <input type='number' name='quantité' placeholder='Entrez la quantité' >
+              <input type='number' name='quantite' placeholder='Entrez la quantité' >
             </div>
             
             <div id="qstFraisHorsForfait">
               <input type='text' name='libelle' placeholder='Entrez le libelle' >
               <br>
-              <input type='date' name='date' placeholder='Entrez la date' >
+              <libelle>Entrez la date : </libelle>
+              <input type='date' name='date'>
               <br>
               <input type='number' name='montant' placeholder='Entrez le montant' >
             </div>
@@ -102,7 +141,7 @@
                   qstFraisForfait.style.display= "none";
                 }else{
                   qstFraisForfait.style.display= "block";
-                }  
+                }
               }
               afficherLigneForfaitETP.onclick= ligneFraisForfait;
               afficherLigneForfaitKM.onclick= ligneFraisForfait;

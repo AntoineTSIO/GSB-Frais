@@ -69,6 +69,26 @@ class VisiteurController extends AbstractController
         $session = $request->getSession();
         $idVisiteur = $session->get('idVisiteur');
 
+        $TypeFrais = $request->get('TypeFrais');
+        if(isset($TypeFrais)){
+            
+            $moisActuelle = date("m");
+            $requete = $connexion->query("SELECT * FROM FicheFrais where mois ='" . $moisActuelle . "'");
+            $ficheFraisActuelle = $requete->fetch();
+            if(empty($ficheFraisActuelle)){
+                $requete = $connexion->query("INSERT INTO FicheFrais(`idVisiteur`,`mois`) values('" . $idVisiteur . "','" . $moisActuelle . "')");
+            }
+            if($TypeFrais == "ETP" or $TypeFrais == "KM" or $TypeFrais == "NUI" or $TypeFrais == "REP" ){
+                $quantite = $request->get("quantite");
+                $connexion->query("INSERT INTO LigneFraisForfait VALUES('" . $idVisiteur . "','" . $moisActuelle . "','" . $TypeFrais . "'," . $quantite . ")");
+            }elseif($TypeFrais == "AUT"){
+                $libelle = $request->get("libelle");
+                $date = $request->get("date");
+                $montant = $request->get("montant");
+                $connexion->query("INSERT INTO LigneFraisHorsForfait(`idVisiteur`,`mois`,`libelle`,`date`,`montant`) VALUES('" . $idVisiteur . "','" . $moisActuelle . "','" . $libelle . "','" . $date . "'," . $montant . ")");
+            }
+        }
+
         $requete = $connexion->query("SELECT * FROM LigneFraisForfait where idVisiteur = '" . $idVisiteur . "'" );
         $ligneFraisForfait = $requete->fetchall();
 
