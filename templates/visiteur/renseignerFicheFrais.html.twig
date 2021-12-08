@@ -18,6 +18,12 @@
   </div>
 </nav>
 
+<!--{% if test is empty %}
+
+<h5>-- {{test}} --</h5>
+
+{% endif %} A VOIR !!-->
+
 {% if ligneFraisForfait is empty and ligneFraisHorsForfait is empty %}
 
     <button id="debutQuestionnaire" type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#ajouterFrais">
@@ -36,24 +42,49 @@
 <div style="width: 50%;">
 <div style="justify-content: center;">
   {% if ligneFraisForfait is not empty %}
-  {% for i in 0..(ligneFraisForfait|length)-1 %}
+  {% for ligneFrais in ligneFraisForfait %}
 
-  <table style="border: solid; margin:0 auto auto auto; width: 70%; text-align: center;">
+  <table id="table" style="border: solid; margin:0 auto auto auto; width: 70%; text-align: center;">
       <thead>
           <tr style="background-color: #333; color: #fff;">
               <th style="border: 1px solid #333">mois</th>
               <th style="border: 1px solid #333">id Forfait</th>
               <th style="border: 1px solid #333">quantité</th>
+              <th style="border: 1px solid #333">montant</th>
           </tr>
       </thead>
       <tr>
-          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisForfait[i][1] }}</td>
-          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisForfait[i][2] }}</td>
-          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisForfait[i][3] }}</td>
+        <form method='POST' action="../visiteur/renseignerFicheFrais">
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFrais['mois'] }}</td>
+          <td style="border: 1px solid #333;text-align: center; display: none;"><input style="width: 89px;" type="number" name="mois" placeholder={{ ligneFrais['mois'] }}></td>
+
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFrais['idFraisForfait'] }}</td>
+          <td style="border: 1px solid #333;text-align: center; display: none;"><input style="width: 89px;" type="text" name="idForfait" placeholder={{ ligneFrais['idFraisForfait'] }}></td>
+
+          <td id="ligneFixe{{ligneFrais['idFraisForfait']}}" style="border: 1px solid #333;text-align: center;">{{ ligneFrais['quantite'] }}</td>
+          <td id= "ligneModif{{ligneFrais['idFraisForfait']}}" style="border: 1px solid #333;text-align: center; display: none;"><input style="width: 89px;" type="number" name="quantite" placeholder={{ ligneFrais['quantite'] }}></td>
+
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFrais['montant'] * ligneFrais['quantite']  }} €</td>
+          <td style="border: 1px solid #333;text-align: center; display: none;"></td>
+
+
+          <td><input type="boutton" id="modifier{{ligneFrais['idFraisForfait']}}" value="Modifier"></td>
+        
+          <td><input id= "valider{{ligneFrais['idFraisForfait']}}" style="display: none;" type="Submit" value="Valider"</td>
       </tr>
   </table>
+  <script>
+    function modification(){
+      document.getElementById(id="ligneFixe{{ligneFrais['idFraisForfait']}}").style.display = "none";
+      document.getElementById(id="ligneModif{{ligneFrais['idFraisForfait']}}").style.display = "";
+      document.getElementById(id="modifier{{ligneFrais['idFraisForfait']}}").style.display = "none";
+      document.getElementById(id="valider{{ligneFrais['idFraisForfait']}}").style.display = "";
+    }
+    modifier{{ligneFrais[2]}}.onclick = modification;
+  </script>
     <br>
   {% endfor %}
+  
   {% endif %}
   </div>
 </div>

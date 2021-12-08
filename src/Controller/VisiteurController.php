@@ -70,9 +70,11 @@ class VisiteurController extends AbstractController
         $idVisiteur = $session->get('idVisiteur');
 
         $TypeFrais = $request->get('TypeFrais');
-        if(isset($TypeFrais)){
+
+        $moisActuelle = date("m");
+        
+        if(isset($TypeFrais)){    
             
-            $moisActuelle = date("m");
             $requete = $connexion->query("SELECT * FROM FicheFrais where mois ='" . $moisActuelle . "'");
             $ficheFraisActuelle = $requete->fetch();
             if(empty($ficheFraisActuelle)){
@@ -89,7 +91,17 @@ class VisiteurController extends AbstractController
             }
         }
 
-        $requete = $connexion->query("SELECT * FROM LigneFraisForfait where idVisiteur = '" . $idVisiteur . "'" );
+        //$ligneFixeETP = $request->get('ligneFixeETP');
+        //$ligneFixeKM = $request->get('ligneFixeKM');
+        //$ligneFixeNUI = $request->get('ligneFixeNUI');
+        //$ligneFixeREP = $request->get('ligneFixeREP');
+
+        //if($ligneFixeETP != null or $ligneFixeKM != null or $ligneFixeNUI != null or $ligneFixeREP != null){
+        //    $requeteETP = $connexion->query("UPDATE LigneFraisForfait SET quantite = " . $ligneFixeETP . " WHERE idFraisForfait = ETP and mois = '" . $moisActuelle . "'");
+        //}
+
+        $requete = $connexion->query("SELECT idVisiteur, mois, idFraisForfait, quantite, montant FROM LigneFraisForfait as L 
+                                        INNER JOIN FraisForfait as F ON L.idFraisForfait = F.id where idVisiteur = '" . $idVisiteur . "'" );
         $ligneFraisForfait = $requete->fetchall();
 
         $requete = $connexion->query("SELECT * FROM LigneFraisHorsForfait where idVisiteur = '" . $idVisiteur . "'" );
@@ -97,7 +109,8 @@ class VisiteurController extends AbstractController
 
         return $this->render('visiteur/renseignerFicheFrais.html.twig', [
             'ligneFraisForfait' => $ligneFraisForfait,
-            'ligneFraisHorsForfait' => $ligneFraisHorsForfait
+            'ligneFraisHorsForfait' => $ligneFraisHorsForfait,
+           // 'test' => $ligneFixeETP
         ]);
     }
 }
