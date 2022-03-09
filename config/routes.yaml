@@ -1,7 +1,27 @@
-controllers:
-    resource: ../src/Controller/
-    type: annotation
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
 
-kernel:
-    resource: ../src/Kernel.php
-    type: annotation
+accueil:
+    path: /accueil
+    controller: App\Controller\ConnexionController::index
+
+connecter:
+    path: /connecter
+    controller: App\Controller\ConnexionController::connecter
+
+deconnecter:
+    path: /deconnecter
+    controller: App\Controller\ConnexionController::deconnexion
+
+comptable:
+    path: /comptable
+    controller: App\Controller\ComptableController::index
+
+# validerFicheFrais:
+#     path: /comptable/valider
+#     controller: App\Controller\ComptableController::validerFicheFrais
+
+validerUneFiche:
+    path: /comptable/valider
+    controller: App\Controller\ComptableController::validerUneFiche
