@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,6 +11,13 @@ use App\Entity;
 
 class ConnexionController extends AbstractController
 {
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
     public function index(): Response {
         return $this->render('connexion/index.html.twig', [
             'controller_name' => 'ConnexionController',
@@ -20,10 +28,9 @@ class ConnexionController extends AbstractController
         $login = $request->request->get('login');
         $mdp = $request->request->get('mdp');
 
-        $em = $this->getDoctrine()->getManager();
-        $repositoryVisiteur = $em->getRepository(Entity\Visiteur::class);
+        $repositoryVisiteur = $this->em->getRepository(Entity\Visiteur::class);
         $visiteurs = $repositoryVisiteur->findAll();
-        $repositoryComptable = $em->getRepository(Entity\Comptable::class);
+        $repositoryComptable = $this->em->getRepository(Entity\Comptable::class);
         $comptables = $repositoryComptable->findAll();
 
         foreach($visiteurs as $visiteur){
