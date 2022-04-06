@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Visiteur {% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/visiteur">
+        <h5>GSB Frais</h5>
+    </a>
+    <span class="navbar-header text-center">
+      <h3>Espace Visiteur</h3>
+      <h7>Consulter Fiches de Frais</h7>
+    </span>
+    <span class="navbar-text" id="deconnexion">
+      <h5>{{app.session.get('prenom')}} {{app.session.get('nom')}}</h5>
+    </span>
+  </div>
+</nav>
+
+{% if ficheFrais is empty %} <!-- si aucune fiche de frais trouver -->
+
+<div class="col-sm d-grip gap-2 col-6 mx-auto" style="margin-top: 75px;">
+    <div class="alert alert-danger" role="alert">
+        <p> Aucune fiche de frais n'est renseignée pour cette date donnée.</p>
+        <script type="text/javascript">
+            var duree = 5;
+            function decompte()
+            {
+                if(duree <= 1){
+                    var suffixe = " seconde";
+                }else{
+                    var suffixe = " secondes";
+                }
+                document.getElementById("decompte").innerHTML= "Vous allez être rediriger vers la page précédente dans " + duree + suffixe;
+                duree -= 1;
+                setTimeout("decompte();", 1000);
+                if(duree == -1){
+                    document.location.href="/visiteur";
+                }
+            }
+        </script>
+        <p id="decompte"><script type="text/javascript"> decompte() </script></p>
+    </div>
+</div>
+
+{% else %} <!-- Si la fiche frais est trouver  -->
+
+<h2> La fiche de frais du {{ ficheFrais[0][1]|slice(0,2) }}-{{ ficheFrais[0][1]|slice(2,6)}} est actuellement dans l'état <strong>{{ ficheFrais[0]['idEtat'] }}</strong> ({{ libelle[0][0] }})</h2>
+
+<div style="display: flex;
+  align-items: center;
+  justify-content: center;">
+  <h3 style="width: 50%; text-align: center;">Fiche Frais Forfait</h3>
+  <h3 style="width: 50%; text-align: center;">Fiche Frais Hors Forfait</h3>
+</div>
+<div style ="display: flex;
+  justify-content: center;">
+ <div style="width: 50%;">
+ <div style="justify-content: center;">
+
+   {% if ligneFraisForfait is not empty %}
+   {% for ligneFrais in ligneFraisForfait %}
+
+   <table style="border: solid; margin:0 auto auto auto; width: 70%; text-align: center;">
+   <table id="table" style="border: solid; margin:0 auto auto auto; width: 70%; text-align: center;">
+       <thead>
+           <tr style="background-color: #333; color: #fff;">
+               <th style="border: 1px solid #333">mois</th>
+               <th style="border: 1px solid #333">id Forfait</th>
+               <th style="border: 1px solid #333">quantité</th>
+               <th style="border: 1px solid #333">montant</th>
+           </tr>
+       </thead>
+       <tr>
+         <form method='POST' action="../visiteur/renseignerFicheFrais">
+           <td style="border: 1px solid #333;text-align: center;">{{ ligneFrais['mois']|slice(0,2) }}</td> {# slice(0,2) permet d'afficher que les 2 premiers charactères #}
+
+           <td style="border: 1px solid #333;text-align: center;">{{ ligneFrais['idFraisForfait'] }}</td>
+
+           <td id="ligneFixe{{ligneFrais['idFraisForfait']}}" style="border: 1px solid #333;text-align: center;"> {{ ligneFrais['quantite'] }}</td>
+
+           <td style="border: 1px solid #333;text-align: center;">{{ ligneFrais['montant'] * ligneFrais['quantite']  }} €</td>
+           </form>
+       </tr>
+   </table>
+     <br>
+   
+   {% endfor %}
+   {% endif %}
+   </div>
+ </div>
+<div style="width: 50%;">
+
+  {% if ligneFraisHorsForfait is not empty %}
+  {% for ligneFraisHorsForfait in ligneFraisHorsForfait %}
+  <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
+      <thead>
+          <tr style="background-color: #333; color: #fff;">
+              <th style="border: 1px solid #333">mois</th>
+              <th style="border: 1px solid #333">libelle</th>
+              <th style="border: 1px solid #333">date</th>
+              <th style="border: 1px solid #333">montant</th>  
+          </tr>
+      </thead>
+      <tr>          
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['mois']|slice(0,2) }}</td>
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['libelle'] }}</td>
+
+          <td id="ligneFixeDateHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['date'] }}</td>
+          </td>
+
+          <td id="ligneFixeMontantHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['montant'] }} €</td>
+        </tr>
+  </table>
+    <br>
+
+  {% endfor %}
+  {% endif %}
+</div>
+</div>
+
+{% endif %}
+{% endblock %}

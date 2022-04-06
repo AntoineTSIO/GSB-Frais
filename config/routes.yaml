@@ -1,7 +1,39 @@
-controllers:
-    resource: ../src/Controller/
-    type: annotation
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
 
-kernel:
-    resource: ../src/Kernel.php
-    type: annotation
+accueil:
+    path: /accueil
+    controller: App\Controller\ConnexionController::index
+
+connecter:
+    path: /connecter
+    controller: App\Controller\ConnexionController::connecter
+
+deconnecter:
+    path: /deconnecter
+    controller: App\Controller\ConnexionController::deconnexion
+
+
+
+
+
+
+
+
+
+
+
+
+
+visiteur:
+    path: /visiteur
+    controller: App\Controller\VisiteurController::index
+
+consulterFicheFrais:
+    path: /visiteur/consulterFicheFrais
+    controller: App\Controller\VisiteurController::consulterFicheFrais
+
+renseignerFicheFrais:
+    path: /visiteur/renseignerFicheFrais
+    controller: App\Controller\VisiteurController::renseignerFicheFrais

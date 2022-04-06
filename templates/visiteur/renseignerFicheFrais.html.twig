@@ -1,0 +1,397 @@
+{% extends 'base.html.twig' %}
+{% block title %} Visiteur {% endblock %}
+{% block body %}
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/visiteur">
+        <h5>GSB Frais</h5>
+    </a>
+    <span class="navbar-header text-center">
+      <h3>Espace Visiteur</h3>
+      <h7>renseigner Fiches de Frais</h7>
+    </span>
+    <span class="navbar-text" id="deconnexion">
+      <h5>{{app.session.get('prenom')}} {{app.session.get('nom')}}</h5>
+    </span>
+   </div>
+ </nav>
+
+<!-- Création de variable global initialiser à false pour savoir quelles frais sont créer-->
+ {% set fraisETPCreer = false %}
+ {% set fraisKMCreer = false %}
+ {% set fraisNUICreer = false %}
+ {% set fraisREPCreer = false %}
+
+ {% if ligneFraisForfait is empty and ligneFraisHorsForfait is empty %}
+
+     <button id="debutQuestionnaire" type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#ajouterFrais">
+        Ajouter frais
+    </button>
+{% else %}
+<div style="display: flex;
+  align-items: center;
+  justify-content: center;">
+  <h3 style="width: 50%; text-align: center;">Fiche Frais Forfait</h3>
+  <h3 style="width: 50%; text-align: center;">Fiche Frais Hors Forfait</h3>
+</div>
+<div style ="display: flex;
+  justify-content: center;">
+ <div style="width: 50%;">
+ <div style="justify-content: center;">
+
+   {% if ligneFraisForfait is not empty %}
+   {% for ligneFrais in ligneFraisForfait %}
+
+   <!-- modification des variable pour savoir quelles frais sont créer-->
+
+   {% if ligneFrais['idFraisForfait'] == "ETP" %}
+  
+   {% set fraisETPCreer = true %}
+   
+   {% endif %}
+   {% if ligneFrais['idFraisForfait'] == "KM" %}
+  
+   {% set fraisKMCreer = true %}
+   
+   {% endif %}
+   {% if ligneFrais['idFraisForfait'] == "NUI" %}
+  
+   {% set fraisNUICreer = true %}
+   
+   {% endif %}
+   {% if ligneFrais['idFraisForfait'] == "REP" %}
+  
+   {% set fraisREPCreer = true %}
+   
+   {% endif %}
+
+   <table style="border: solid; margin:0 auto auto auto; width: 70%; text-align: center;">
+   <table id="table" style="border: solid; margin:0 auto auto auto; width: 70%; text-align: center;">
+       <thead>
+           <tr style="background-color: #333; color: #fff;">
+               <th style="border: 1px solid #333">mois</th>
+               <th style="border: 1px solid #333">id Forfait</th>
+               <th style="border: 1px solid #333">quantité</th>
+               <th style="border: 1px solid #333">montant</th>
+           </tr>
+       </thead>
+       <tr>
+         <form method='POST' action="../visiteur/renseignerFicheFrais">
+           <td style="border: 1px solid #333;text-align: center;">{{ ligneFrais['mois']|slice(0,2) }}</td> {# slice(0,2) permet d'afficher que les 2 premiers charactères #}
+
+           <td style="border: 1px solid #333;text-align: center;">{{ ligneFrais['idFraisForfait'] }}</td>
+
+           <td id="ligneFixe{{ligneFrais['idFraisForfait']}}" style="border: 1px solid #333;text-align: center;"> {{ ligneFrais['quantite'] }}</td>
+           <td id= "ligneModif{{ligneFrais['idFraisForfait']}}" style="border: 1px solid #333;text-align: center; display: none;"><input required style="width: 89px;" type="number" name="ligneModif{{ligneFrais['idFraisForfait']}}" value={{ ligneFrais['quantite'] }} min = 0 }}></td>
+
+           <td style="border: 1px solid #333;text-align: center;">{{ ligneFrais['montant'] * ligneFrais['quantite']  }} €</td>
+
+
+           <td style="width: 18%;"><input style="width:100%;"type="boutton" id="modifier{{ligneFrais['idFraisForfait']}}" value="Modifier"></td>
+
+           <td><input id= "valider{{ligneFrais['idFraisForfait']}}" style="display: none;" type="Submit" value="Valider"></td>
+           </form>
+       </tr>
+   </table>
+
+   <script>
+     function modificationForfait(){
+       document.getElementById(id="ligneFixe{{ligneFrais['idFraisForfait']}}").style.display = "none";
+       document.getElementById(id="ligneModif{{ligneFrais['idFraisForfait']}}").style.display = "";
+       document.getElementById(id="modifier{{ligneFrais['idFraisForfait']}}").style.display = "none";
+       document.getElementById(id="valider{{ligneFrais['idFraisForfait']}}").style.display = "";
+        
+     }
+     modifier{{ligneFrais['idFraisForfait']}}.onclick = modificationForfait;
+
+   </script>
+     <br>
+   
+   {% endfor %}
+   {% endif %}
+   </div>
+ </div>
+<div style="width: 50%;">
+  {% if ligneFraisHorsForfait is not empty %}
+  {% for ligneFraisHorsForfait in ligneFraisHorsForfait %}
+  <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
+      <thead>
+          <tr style="background-color: #333; color: #fff;">
+              <th style="border: 1px solid #333">mois</th>
+              <th style="border: 1px solid #333">libelle</th>
+              <th style="border: 1px solid #333">date</th>
+              <th style="border: 1px solid #333">montant</th>  
+          </tr>
+      </thead>
+      <tr>
+        <form method='POST' action="../visiteur/renseignerFicheFrais" onsubmit="return validerDateModif()" name="formModifHorsForfait">
+          
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['mois']|slice(0,2) }}</td>
+          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['libelle'] }}</td>
+
+          <td id="ligneFixeDateHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['date'] }}</td>
+          <td id="ligneModifDateHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center; display: none;"><input type="date" name ="ligneModifDateHorsForfait" value={{ ligneFraisHorsForfait['date'] }}>
+          <font id="errDateModifHorsForfait" color="red" style="display: none;"> * Le champ <strong>date</strong> doit être renseigner </font>
+          <font id="dateErroneModifHorsForfait" color="red" style="display: none;"> * La date d'engagement doit se situer dans l'année écoulée </font>
+
+          </td>
+
+          <td id="ligneFixeMontantHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['montant'] }} €</td>
+          <td id="ligneModifMontantHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center; display: none;"><input required style="width: 89px;" type="number" name="ligneModifMontantHorsForfait{{ ligneFraisHorsForfait['id'] }}" value={{ ligneFraisHorsForfait['montant'] }} min = 0 }}></td>
+          
+          <input type="hidden" name="numId" value="{{ligneFraisHorsForfait['id']}}"> {# permet de connaitre l'id de la ligne pour ne pas confondre #}
+
+          <td style="width: 17%;"><input style="width: 100%;" type="boutton" id="modifier{{ligneFraisHorsForfait['id']}}" value="Modifier"></td>
+          <td><input id= "valider{{ligneFraisHorsForfait['id']}}" style="display: none;" type="Submit" value="Valider"></td>
+          </form>
+            <td><button id="supp{{ligneFraisHorsForfait['id']}}" display="none" data-bs-toggle="modal" data-bs-target="#suppHorsForfait{{ligneFraisHorsForfait['id']}}">
+                Supprimer
+            </button></td>
+<!-- Modal -->
+<div class="modal fade" id="suppHorsForfait{{ligneFraisHorsForfait['id']}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="suppHorsForfait{{ligneFraisHorsForfait['id']}}Label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titreModal">Voulez-vous vraiment supprimer le frais suivant ?</h5>
+      </div>
+      <div class="modal-body">
+        libelle : {{ ligneFraisHorsForfait['libelle'] }}
+        <br>
+        du : {{ ligneFraisHorsForfait['date'] }}
+        <br>
+        ayant pour montant : {{ ligneFraisHorsForfait['montant'] }} €
+
+      </div>
+      <div class="modal-footer">
+        <form method='POST' action="../visiteur/renseignerFicheFrais">
+          <input type="hidden" name="numId" value="{{ligneFraisHorsForfait['id']}}">
+          <input type="hidden" name="supp" value="ok">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          <input type="submit" class="btn btn-primary" value="Valider">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+      </tr>
+  </table>
+
+  <script>
+     function modificationHorsForfait(){
+       document.getElementById(id="ligneFixeDateHorsForfait{{ligneFraisHorsForfait['id']}}").style.display = "none";
+       document.getElementById(id="ligneModifDateHorsForfait{{ligneFraisHorsForfait['id']}}").style.display = ""; 
+       document.getElementById(id="ligneFixeMontantHorsForfait{{ligneFraisHorsForfait['id']}}").style.display = "none";
+       document.getElementById(id="ligneModifMontantHorsForfait{{ligneFraisHorsForfait['id']}}").style.display = ""; 
+       document.getElementById(id="modifier{{ligneFraisHorsForfait['id']}}").style.display = "none";
+       document.getElementById(id="valider{{ligneFraisHorsForfait['id']}}").style.display = "";
+       document.getElementById(id="supp{{ligneFraisHorsForfait['id']}}").style.display = "";
+        
+     }
+     modifier{{ligneFraisHorsForfait['id']}}.onclick = modificationHorsForfait;
+
+   </script>
+    <br>
+  {% endfor %}
+  {% endif %}
+</div>
+</div>
+  <br>
+    <button id="debutQuestionnaire" type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#ajouterFrais">
+        Ajouter frais
+    </button>
+{% endif %}
+
+<script>
+function validerCreationFraisHorsForfait(){
+  // si toute les valeurs sont remplis
+  if(document.formSaisieCreationFraisHorsForfait.libelle.value != "" && document.formSaisieCreationFraisHorsForfait.date.value != "" && document.formSaisieCreationFraisHorsForfait.montant.value != "") {
+     
+    var dateEntrer = new Date(document.formSaisieCreationFraisHorsForfait.date.value);
+    var dateActuelle = new Date();
+    var dateDeTest = new Date();
+    dateDeTest.setYear(dateDeTest.getFullYear()-1);
+
+    document.getElementById("errLibelle").style.display = "none";
+    document.getElementById("errDate").style.display = "none";
+    document.getElementById("errMontant").style.display = "none";
+
+    if(dateEntrer < dateDeTest || dateEntrer > dateActuelle){
+      document.getElementById("dateErrone").style.display = "";
+      return false;
+    }else{
+      return true;
+    }
+  }
+  else {
+
+    var dateEntrer = new Date(document.formSaisieCreationFraisHorsForfait.date.value);
+    var dateActuelle = new Date();
+    var dateDeTest = new Date();
+    dateDeTest.setYear(dateDeTest.getFullYear()-1);
+
+
+    if (document.formSaisieCreationFraisHorsForfait.libelle.value == ""){
+      document.getElementById("errLibelle").style.display = "";
+    }else{
+        document.getElementById("errLibelle").style.display = "none";
+    }
+    if (document.formSaisieCreationFraisHorsForfait.date.value == ""){
+      document.getElementById("errDate").style.display = "";
+      document.getElementById("dateErrone").style.display = "none";
+      
+      
+    }else if(dateEntrer < dateDeTest || dateEntrer > dateActuelle){
+      document.getElementById("dateErrone").style.display = "";
+      document.getElementById("errDate").style.display = "none";
+      
+    }
+    if (document.formSaisieCreationFraisHorsForfait.montant.value == ""){
+      document.getElementById("errMontant").style.display = "";
+    }else{
+        document.getElementById("errMontant").style.display = "none";
+    }
+    return false;
+  }
+}
+
+function validerCreationFraisForfait(){
+    if (document.formSaisieCreationFraisForfait.quantite.value == ""){
+      document.getElementById("errQuantite").style.display = "";
+      return false;
+    }else{
+        return true;
+    }
+}
+
+function validerDateModif(){
+    var dateEntrer = new Date(document.formModifHorsForfait.ligneModifDateHorsForfait.value);
+    var dateActuelle = new Date();
+    var dateDeTest = new Date();
+    dateDeTest.setYear(dateDeTest.getFullYear()-1);
+
+
+    if (document.formModifHorsForfait.ligneModifDateHorsForfait.value == ""){
+        document.getElementById("errDateModifHorsForfait").style.display = "";
+        document.getElementById("dateErroneModifHorsForfait").style.display = "none";
+        return false;
+    }else if(dateEntrer < dateDeTest || dateEntrer > dateActuelle ){
+        document.getElementById("errDateModifHorsForfait").style.display = "none";
+        document.getElementById("dateErroneModifHorsForfait").style.display = "";
+        return false;
+    }
+    else{
+        return true;
+    }
+}
+
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="ajouterFrais" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ajouterFraisLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titreModal">Ajouter une fiche de frais</h5>
+      </div>
+      <div class="modal-body">
+        <form method='POST' action="../visiteur/renseignerFicheFrais" onsubmit="return validerCreationFraisForfait()" name="formSaisieCreationFraisForfait">
+            <select name="TypeFrais">
+                <option id="supLigne" checked value='00'>-- Choisissez un type de frais --</option>
+                
+                <option {% if fraisETPCreer == true %} style="display: none;" {% endif %} id="afficherLigneForfaitETP" value="ETP">Forfait Etape</option>
+                
+                <option {% if fraisKMCreer == true %} style="display: none;" {% endif %}id="afficherLigneForfaitKM" value="KM">Frais Kilométrique</option>
+                
+                <option {% if fraisNUICreer == true %} style="display: none;" {% endif %}id="afficherLigneForfaitNUI" value="NUI">Nuitée Hôtel</option>
+                
+                <option {% if fraisREPCreer == true %} style="display: none;" {% endif %}id="afficherLigneForfaitREP" value="REP">Repas Restaurant</option>
+                
+                <option id="afficherLigneHorsForfait" value="AUT">Autre</option>
+            </select>
+            <div id="btnFemer">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+            <div id="qstFraisForfait">
+              <input type='number' name='quantite' placeholder='Entrez la quantité' min = 1 >
+              <font id="errQuantite" color="red" style="display: none;"> * Vous devez saisir une <strong>quantite</strong> </font>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                <input type="submit" class="btn btn-primary" value="Valider">
+                </form>
+              </div>
+            </div>
+            
+            <div id="qstFraisHorsForfait">
+              <form method='POST' action="../visiteur/renseignerFicheFrais" onsubmit="return validerCreationFraisHorsForfait()" name="formSaisieCreationFraisHorsForfait">
+              <input type="hidden" name="TypeFrais" value="AUT">
+              <input type='text' name='libelle' placeholder='Entrez le libelle'> <font id="errLibelle" color="red" style="display: none;"> * Le champ <strong>libelle</strong> doit être renseigner </font>
+              <br>
+              <libelle>Entrez la date : </libelle>
+              <input type='date' name='date'> <font id="errDate" color="red" style="display: none;"> * Le champ <strong>date</strong> doit être renseigner </font>
+              <font id="dateErrone" color="red" style="display: none;"> * La date d'engagement doit se situer dans l'année écoulée </font>
+              <br>
+              <input type='number' name='montant' placeholder='Entrez le montant' > <font id="errMontant" color="red" style="display: none;"> * Le champ <strong>montant</strong> doit être renseigner </font>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <input type="submit" class="btn btn-primary" value="Valider">
+                    </form>
+                </div>
+            </div>
+            
+            <script>
+            function supQuestionnaireForfait(){
+                if(getComputedStyle(qstFraisForfait).display != "none"){
+                  qstFraisForfait.style.display= "none";
+                  btnFemer.style.display = "";
+                  }
+                if(getComputedStyle(qstFraisHorsForfait).display != "none"){
+                    qstFraisHorsForfait.style.display= "none";
+                    btnFemer.style.display = "";
+                  }
+                  var ligneFraisForfaitAfficher = 1;
+                  var ligneFraisHorsForfaitAfficher = 1;
+              }
+              debutQuestionnaire.onclick= supQuestionnaireForfait;
+              supLigne.onclick = supQuestionnaireForfait;         
+              
+              function ligneFraisForfait(){
+                if(getComputedStyle(qstFraisHorsForfait).display != "none"){
+                    qstFraisHorsForfait.style.display= "none";
+                  }
+                 if(getComputedStyle(qstFraisForfait).display != "none" && ligneFraisForfaitAfficher ==1){
+                  qstFraisForfait.style.display= "none";
+                }else{
+                  qstFraisForfait.style.display= "block";
+                }
+                btnFemer.style.display = "none";
+              }
+              afficherLigneForfaitETP.onclick= ligneFraisForfait;
+              afficherLigneForfaitKM.onclick= ligneFraisForfait;
+              afficherLigneForfaitNUI.onclick= ligneFraisForfait;
+              afficherLigneForfaitREP.onclick= ligneFraisForfait;
+
+
+              function ligneFraisHorsForfait(){
+                if(getComputedStyle(qstFraisForfait).display != "none"){
+                    qstFraisForfait.style.display= "none";
+                  }
+                if(getComputedStyle(qstFraisHorsForfait).display != "none" && ligneFraisHorsForfaitAfficher == 1){
+                  qstFraisHorsForfait.style.display= "none";
+                }else{
+                  qstFraisHorsForfait.style.display= "block";
+                }
+                btnFemer.style.display = "none";
+              }
+              afficherLigneHorsForfait.onclick= ligneFraisHorsForfait;
+              
+            </script>
+            
+      </div>
+      
+      
+    </div>
+  </div>
+</div>
+{% endblock %}

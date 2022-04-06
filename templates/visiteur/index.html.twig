@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Visiteur {% endblock %}
+
+{% block body %}
+
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/visiteur">
+        <h5>GSB Frais</h5>
+    </a>
+    <span class="navbar-header">
+      <h3>Espace Visiteur</h3>
+    </span>
+    <span class="navbar-text">
+      <h5>{{app.session.get('prenom')}} {{app.session.get('nom')}}</h5>
+    </span>
+  </div>
+</nav>
+
+<div class="col-sm d-grip gap-2 col-4 mx-auto" style="margin-top: 50px;">
+    <div class="container">
+    <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#consulter">
+        Consulter une Fiche de Frais
+    </button>
+    <button type="button" class="btn btn-outline-info" onclick="location.href='visiteur/renseignerFicheFrais'">
+        Renseigner une Fiche de Frais
+    </button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="consulter" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="consulterLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="titreModal">Choisissez le mois et l'année de la fiche de frais a consulter</h5>
+      </div>
+      <div class="modal-body">
+        <form method='POST' action="visiteur/consulterFicheFrais">
+            <select name="mois">
+                <option checked value='00'>-- Choisissez un mois --</option>
+                <option value="01">Janvier</option>
+                <option value="02">Fevrier</option>
+                <option value="03">Mars</option>
+                <option value="04">Avril</option>
+                <option value="05">Mai</option>
+                <option value="06">Juin</option>
+                <option value="07">Juillet</option>
+                <option value="08">Aout</option>
+                <option value="09">Septembre</option>
+                <option value="10">Octobre</option>
+                <option value="11">Novembre</option>
+                <option value="12">Decembre</option>
+            </select> 
+            <input type="number" name="annee" placeholder="Choisissez l'année" >
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <input type="submit" class="btn btn-primary" value="Valider">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
