@@ -47,6 +47,7 @@ class VisiteurController extends AbstractController
 
         $requete = $connexion->query('SELECT * FROM FicheFrais where mois = ' . $dateFiche );
         $FicheFrais = $requete->fetchall();
+        //dd($FicheFrais);
 
         //recuperation du libelle de la fiche frais
 
