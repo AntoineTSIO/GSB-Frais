@@ -12,8 +12,7 @@
 
 ## Documentation
 
-* [Documentation technique visiteur](https://github.com/AntoineTSIO/GSB-Frais/blob/main/docs/Documentation-Technique.pdf)
-* [Documentation technique comptable](https://github.com/AntoineTSIO/GSB-Frais/blob/comptable/docs/Documentation-Technique.pdf)
+* [Documentation technique](https://github.com/AntoineTSIO/GSB-Frais/blob/comptable/docs/Documentation-Technique.pdf)
 
 ## Contexte
 
