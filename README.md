@@ -22,6 +22,10 @@
 4. [GSB - Exemples](https://github.com/AntoineTSIO/GSB-Frais/blob/comptable/docs/04-GSB-AppliFrais-Commentaires.pdf)
 5. [GSB - Architecture de l'existant](https://github.com/AntoineTSIO/GSB-Frais/blob/comptable/docs/05-GSB-Architecture-Application-Existante.pdf)
 
+## Base de données
+
+L'application web GSB-Frais utilise une base de données nommée [GSB-BD](https://github.com/AntoineTSIO/GSB-BD.git)
+
 ### Licence
 
 Voir le fichier [LICENSE.md](https://github.com/AntoineTSIO/GSB-Frais/blob/main/LICENSE.md) fourni.
