@@ -22,6 +22,11 @@
 4. [GSB - Exemples](https://github.com/AntoineTSIO/GSB-Frais/blob/comptable/docs/04-GSB-AppliFrais-Commentaires.pdf)
 5. [GSB - Architecture de l'existant](https://github.com/AntoineTSIO/GSB-Frais/blob/comptable/docs/05-GSB-Architecture-Application-Existante.pdf)
 
+## Visiteur et Comptable
+L'application étant scindée en deux parties, visiteurs et comptable, ceci à donc nécessité un travaille sur plusieurs branches dont voici les liens :
+* [Partie Visiteur](https://github.com/AntoineTSIO/GSB-Frais/tree/main.git)
+* [Partie Comptable](https://github.com/AntoineTSIO/GSB-Frais/tree/comptable.git)
+
 ## Base de données
 
 L'application web GSB-Frais utilise une base de données nommée [GSB-BD](https://github.com/AntoineTSIO/GSB-BD.git)
