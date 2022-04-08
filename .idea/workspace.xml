@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b12af142-8831-4363-9a02-266bd57a9ffe" name="Changes" comment="Corrections Doctrine + Ajout logo">
-      <change beforePath="$PROJECT_DIR$/templates/comptable/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/comptable/index.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,6 +15,24 @@
     <execution />
   </component>
   <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="comptable" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -196,6 +215,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="```Changement ordinateur hôte```" />
     <MESSAGE value="Corrections Doctrine + Ajout logo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Corrections Doctrine + Ajout logo" />
+    <MESSAGE value="Mise à jour README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mise à jour README.md" />
   </component>
 </project>
