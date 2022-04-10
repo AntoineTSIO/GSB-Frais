@@ -12,6 +12,7 @@
     </span>
     <span class="navbar-text" id="deconnexion">
       <h5>{{app.session.get('prenom')}} {{app.session.get('nom')}}</h5>
+      <a href='/deconnecter'>deconnexion</a>
     </span>
    </div>
  </nav>
@@ -69,10 +70,10 @@
    <table id="table" style="border: solid; margin:0 auto auto auto; width: 70%; text-align: center;">
        <thead>
            <tr style="background-color: #333; color: #fff;">
-               <th style="border: 1px solid #333">mois</th>
-               <th style="border: 1px solid #333">id Forfait</th>
-               <th style="border: 1px solid #333">quantité</th>
-               <th style="border: 1px solid #333">montant</th>
+               <th style="border: 1px solid #333; width: 20%;">mois</th>
+               <th style="border: 1px solid #333; width: 20%;">id Forfait</th>
+               <th style="border: 1px solid #333; width: 20%;">quantité</th>
+               <th style="border: 1px solid #333; width: 20%;">montant</th>
            </tr>
        </thead>
        <tr>
@@ -87,9 +88,9 @@
            <td style="border: 1px solid #333;text-align: center;">{{ ligneFrais['montant'] * ligneFrais['quantite']  }} €</td>
 
 
-           <td style="width: 18%;"><input style="width:100%;"type="boutton" id="modifier{{ligneFrais['idFraisForfait']}}" value="Modifier"></td>
+           <td style="width: 20%;"><input style="width:100%;" type="boutton" class="btn btn-secondary" id="modifier{{ligneFrais['idFraisForfait']}}" value="Modifier"></td>
 
-           <td><input id= "valider{{ligneFrais['idFraisForfait']}}" style="display: none;" type="Submit" value="Valider"></td>
+           <td><input id= "valider{{ligneFrais['idFraisForfait']}}" style="width:100%; display: none;" type="Submit" class="btn btn-success" value="Valider"></td>
            </form>
        </tr>
    </table>
@@ -124,27 +125,46 @@
           </tr>
       </thead>
       <tr>
-        <form method='POST' action="../visiteur/renseignerFicheFrais" onsubmit="return validerDateModif()" name="formModifHorsForfait">
+        <form method='POST' action="../visiteur/renseignerFicheFrais">
           
           <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['mois']|slice(0,2) }}</td>
           <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['libelle'] }}</td>
 
           <td id="ligneFixeDateHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['date'] }}</td>
-          <td id="ligneModifDateHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center; display: none;"><input type="date" name ="ligneModifDateHorsForfait" value={{ ligneFraisHorsForfait['date'] }}>
-          <font id="errDateModifHorsForfait" color="red" style="display: none;"> * Le champ <strong>date</strong> doit être renseigner </font>
-          <font id="dateErroneModifHorsForfait" color="red" style="display: none;"> * La date d'engagement doit se situer dans l'année écoulée </font>
-
+          <td id="ligneModifDateHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center; display: none;"><input id="dateModifHorsForfait{{ligneFraisHorsForfait['id']}}" type="date" name= "ligneModifDateHorsForfait" value= {{ ligneFraisHorsForfait['date'] }} required>
+          
           </td>
 
           <td id="ligneFixeMontantHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['montant'] }} €</td>
-          <td id="ligneModifMontantHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center; display: none;"><input required style="width: 89px;" type="number" name="ligneModifMontantHorsForfait{{ ligneFraisHorsForfait['id'] }}" value={{ ligneFraisHorsForfait['montant'] }} min = 0 }}></td>
           
+          <td id="ligneModifMontantHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center; display: none;"><input required style="width: 89px;" type="number" name="ligneModifMontantHorsForfait{{ ligneFraisHorsForfait['id'] }}" value={{ ligneFraisHorsForfait['montant'] }} min = 0 }}></td>
+
           <input type="hidden" name="numId" value="{{ligneFraisHorsForfait['id']}}"> {# permet de connaitre l'id de la ligne pour ne pas confondre #}
 
-          <td style="width: 17%;"><input style="width: 100%;" type="boutton" id="modifier{{ligneFraisHorsForfait['id']}}" value="Modifier"></td>
-          <td><input id= "valider{{ligneFraisHorsForfait['id']}}" style="display: none;" type="Submit" value="Valider"></td>
-          </form>
-            <td><button id="supp{{ligneFraisHorsForfait['id']}}" display="none" data-bs-toggle="modal" data-bs-target="#suppHorsForfait{{ligneFraisHorsForfait['id']}}">
+          <td style="width: 18%;"><input style="width: 100%;" type="boutton" class="btn btn-secondary" id="modifier{{ligneFraisHorsForfait['id']}}" value="Modifier"></td>
+          <td><input id="valider{{ligneFraisHorsForfait['id']}}" style="display: none;" class="btn btn-success"type="submit" value="Valider"></td>
+        </form>
+
+         <script>
+          var dateActuelle = new Date();
+          
+          var anneeActuelle = dateActuelle.getFullYear();
+          var anneeMin = anneeActuelle-1;
+          var moisActuelle = dateActuelle.getMonth()+1;
+          if(moisActuelle<10){
+            moisActuelle = "0" + moisActuelle;
+          }
+          var jourActuelle = dateActuelle.getDay();
+          if(jourActuelle<10){
+            jourActuelle = "0" + jourActuelle;
+          }
+          var dateMax = anneeActuelle + "-" + moisActuelle + "-" + jourActuelle;
+          var dateMin = anneeMin + "-" + moisActuelle + "-" + jourActuelle;
+         
+          document.getElementById("dateModifHorsForfait{{ligneFraisHorsForfait['id']}}").max=dateMax;
+          document.getElementById("dateModifHorsForfait{{ligneFraisHorsForfait['id']}}").min=dateMin;
+          </script>
+            <td><button id="supp{{ligneFraisHorsForfait['id']}}" class="btn btn-danger" display="none" data-bs-toggle="modal" data-bs-target="#suppHorsForfait{{ligneFraisHorsForfait['id']}}">
                 Supprimer
             </button></td>
 <!-- Modal -->
@@ -193,6 +213,8 @@
     <br>
   {% endfor %}
   {% endif %}
+  
+
 </div>
 </div>
   <br>
@@ -263,27 +285,6 @@ function validerCreationFraisForfait(){
     }
 }
 
-function validerDateModif(){
-    var dateEntrer = new Date(document.formModifHorsForfait.ligneModifDateHorsForfait.value);
-    var dateActuelle = new Date();
-    var dateDeTest = new Date();
-    dateDeTest.setYear(dateDeTest.getFullYear()-1);
-
-
-    if (document.formModifHorsForfait.ligneModifDateHorsForfait.value == ""){
-        document.getElementById("errDateModifHorsForfait").style.display = "";
-        document.getElementById("dateErroneModifHorsForfait").style.display = "none";
-        return false;
-    }else if(dateEntrer < dateDeTest || dateEntrer > dateActuelle ){
-        document.getElementById("errDateModifHorsForfait").style.display = "none";
-        document.getElementById("dateErroneModifHorsForfait").style.display = "";
-        return false;
-    }
-    else{
-        return true;
-    }
-}
-
 </script>
 
 <!-- Modal -->
@@ -332,7 +333,7 @@ function validerDateModif(){
               <input type='date' name='date'> <font id="errDate" color="red" style="display: none;"> * Le champ <strong>date</strong> doit être renseigner </font>
               <font id="dateErrone" color="red" style="display: none;"> * La date d'engagement doit se situer dans l'année écoulée </font>
               <br>
-              <input type='number' name='montant' placeholder='Entrez le montant' > <font id="errMontant" color="red" style="display: none;"> * Le champ <strong>montant</strong> doit être renseigner </font>
+              <input type='number' min=1 name='montant' placeholder='Entrez le montant' > <font id="errMontant" color="red" style="display: none;"> * Le champ <strong>montant</strong> doit être renseigner </font>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
                     <input type="submit" class="btn btn-primary" value="Valider">

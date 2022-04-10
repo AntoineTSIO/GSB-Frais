@@ -14,6 +14,7 @@
     </span>
     <span class="navbar-text" id="deconnexion">
       <h5>{{app.session.get('prenom')}} {{app.session.get('nom')}}</h5>
+      <a href='/deconnecter'>deconnexion</a>
     </span>
   </div>
 </nav>
@@ -32,7 +33,7 @@
                 }else{
                     var suffixe = " secondes";
                 }
-                document.getElementById("decompte").innerHTML= "Vous allez être rediriger vers la page précédente dans " + duree + suffixe;
+                document.getElementById("decompte").innerHTML= "Vous allez être redirigé vers la page précédente dans " + duree + suffixe;
                 duree -= 1;
                 setTimeout("decompte();", 1000);
                 if(duree == -1){
@@ -66,7 +67,6 @@
    <table id="table" style="border: solid; margin:0 auto auto auto; width: 70%; text-align: center;">
        <thead>
            <tr style="background-color: #333; color: #fff;">
-               <th style="border: 1px solid #333">mois</th>
                <th style="border: 1px solid #333">id Forfait</th>
                <th style="border: 1px solid #333">quantité</th>
                <th style="border: 1px solid #333">montant</th>
@@ -74,7 +74,6 @@
        </thead>
        <tr>
          <form method='POST' action="../visiteur/renseignerFicheFrais">
-           <td style="border: 1px solid #333;text-align: center;">{{ ligneFrais['mois']|slice(0,2) }}</td> {# slice(0,2) permet d'afficher que les 2 premiers charactères #}
 
            <td style="border: 1px solid #333;text-align: center;">{{ ligneFrais['idFraisForfait'] }}</td>
 
@@ -97,14 +96,12 @@
   <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
       <thead>
           <tr style="background-color: #333; color: #fff;">
-              <th style="border: 1px solid #333">mois</th>
               <th style="border: 1px solid #333">libelle</th>
-              <th style="border: 1px solid #333">date</th>
+              <th style="border: 1px solid #333">date d'engagement</th>
               <th style="border: 1px solid #333">montant</th>  
           </tr>
       </thead>
       <tr>          
-          <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['mois']|slice(0,2) }}</td>
           <td style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['libelle'] }}</td>
 
           <td id="ligneFixeDateHorsForfait{{ligneFraisHorsForfait['id']}}" style="border: 1px solid #333;text-align: center;">{{ ligneFraisHorsForfait['date'] }}</td>

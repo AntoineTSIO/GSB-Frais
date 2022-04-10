@@ -45,14 +45,20 @@ class VisiteurController extends AbstractController
         $annee = $request->request->get('annee');
         $dateFiche = $mois . $annee;
 
-        $requete = $connexion->query('SELECT * FROM FicheFrais where mois = ' . $dateFiche );
+        $requete = $connexion->query('SELECT * FROM FicheFrais where mois = ' . $dateFiche . " and idVisiteur = '" . $idVisiteur . "'" );
         $FicheFrais = $requete->fetchall();
         //dd($FicheFrais);
 
         //recuperation du libelle de la fiche frais
 
-        $requete = $connexion->query("SELECT libelle FROM Etat where id = '" . $FicheFrais[0]['idEtat'] . "'");
-        $libelle = $requete->fetchall();
+        $libelle = null; // création de la variable libelle instancier a null
+
+        if(!empty($FicheFrais)){ // regarde si la variable existe et a une valeur differente de null ou 0
+            
+            $requete = $connexion->query("SELECT libelle FROM Etat where id = '" . $FicheFrais[0]['idEtat'] . "'");
+            $libelle = $requete->fetchall();
+        }
+        
 
         $requete = $connexion->query("SELECT idVisiteur, mois, idFraisForfait, quantite, montant FROM LigneFraisForfait as L 
                                         INNER JOIN FraisForfait as F ON L.idFraisForfait = F.id where idVisiteur = '" . $idVisiteur . "' and mois = " . $dateFiche );
@@ -128,6 +134,7 @@ class VisiteurController extends AbstractController
         $ligneModifNUI = $request->get('ligneModifNUI');
         $ligneModifREP = $request->get('ligneModifREP');
     
+        //regarde pour chaque lignModif si les variables sont null, si elles ne le sont pas, la modification de la table se fait
         if(isset($ligneModifETP)){
             $requeteETP = $connexion->query("UPDATE LigneFraisForfait SET quantite = " . $ligneModifETP . " WHERE idFraisForfait = 'ETP' and mois = '" . $mois . "'");
         }
