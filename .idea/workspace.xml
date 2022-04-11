@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b12af142-8831-4363-9a02-266bd57a9ffe" name="Changes" comment="Fin UC4 - Valider fiche de frais">
-      <change afterPath="$PROJECT_DIR$/templates/comptable/suivrePaiementFicheFrais.html.twig" afterDir="false" />
+    <list default="true" id="b12af142-8831-4363-9a02-266bd57a9ffe" name="Changes" comment="Correction UC4 - Valider fiche de frais + Implémentation complète UC5 - Suivre le paiement fiche de frais">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ComptableController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ComptableController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/RedirectionController.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/comptable/erreurValidationFicheFrais.html.twig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/comptable/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/comptable/index.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/comptable/validerFicheFrais.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/comptable/validerFicheFrais.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/redirection/index.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,6 +184,7 @@
       <workItem from="1646834014838" duration="8006000" />
       <workItem from="1647431791094" duration="5272000" />
       <workItem from="1647462160718" duration="7000" />
+      <workItem from="1649697215851" duration="27000" />
     </task>
     <task id="LOCAL-00001" summary="```Changement ordinateur hôte```">
       <created>1646841526536</created>
@@ -255,7 +249,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649669311512</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Correction UC4 - Valider fiche de frais + Implémentation complète UC5 - Suivre le paiement fiche de frais">
+      <created>1649689328092</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1649689328092</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -279,6 +280,7 @@
     <MESSAGE value="Mise à jour Documentation Technique" />
     <MESSAGE value="Mise à jour README.md" />
     <MESSAGE value="Fin UC4 - Valider fiche de frais" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fin UC4 - Valider fiche de frais" />
+    <MESSAGE value="Correction UC4 - Valider fiche de frais + Implémentation complète UC5 - Suivre le paiement fiche de frais" />
+    <option name="LAST_COMMIT_MESSAGE" value="Correction UC4 - Valider fiche de frais + Implémentation complète UC5 - Suivre le paiement fiche de frais" />
   </component>
 </project>

@@ -24,8 +24,8 @@
 
 ## Visiteur et Comptable
 L'application étant scindée en deux parties, visiteurs et comptable, ceci à donc nécessité un travaille sur plusieurs branches dont voici les liens :
-* [Partie Visiteur](https://github.com/AntoineTSIO/GSB-Frais/tree/main.git)
-* [Partie Comptable](https://github.com/AntoineTSIO/GSB-Frais/tree/comptable.git)
+* [Partie Visiteur](https://github.com/AntoineTSIO/GSB-Frais/tree/main)
+* [Partie Comptable](https://github.com/AntoineTSIO/GSB-Frais/tree/comptable)
 
 ## Base de données
 
