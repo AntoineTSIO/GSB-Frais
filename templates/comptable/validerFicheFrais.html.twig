@@ -23,7 +23,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link px-sm-0 px-2">
+                            <a href="/comptable/suivre" class="nav-link px-sm-0 px-2">
                                 <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Suivre le paiement des fiches de frais</span>
                             </a>
                         </li>
@@ -51,6 +51,8 @@
                         <script>
                             var montantTotalFraisForfait = 0;
                             var montantTotalFraisHorsForfait = 0;
+                            var idVisiteur = "";
+                            var mois = "";
                         </script>
                     <div class="col py-3">
                         <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center">
@@ -84,11 +86,17 @@
                                     </table><br>
                                     <script type="text/javascript">
                                         var montantTotalFraisForfait = montantTotalFraisForfait + {{ unFraisForfait['quantite'] * unFraisForfait['montant'] }};
+                                        var idVisiteur = {{ unFraisForfait['idVisiteur'] }};
+                                        var mois = {{ unFraisForfait['mois'] }};
                                         function afficherMontantForfait(){
                                             document.getElementById("montantTotalForfait").innerHTML = "Montant total des frais forfait : " + montantTotalFraisForfait + "€";
                                         }
                                         function envoyerMontantValideForfait(){
                                             document.getElementById("formFraisForfait").value=montantTotalFraisForfait;
+                                        }
+                                        function envoyerIdMois(){
+                                            document.getElementById("formIdFrais").value=idVisiteur;
+                                            document.getElementById("formMoisFrais").value=mois;
                                         }
                                     </script>
                                     {% endfor %}
@@ -109,27 +117,47 @@
                                         </tr>
                                         </thead>
                                             <tr>
-                                                <form method='POST' action="../comptable/valider">
+
+
                                                     <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['mois']|slice(0,2) }}</td>
                                                     <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['libelle'] }}</td>
                                                     <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['date'] }}</td>
                                                     <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['montant'] }}</td>
-                                                    <input type="hidden" name="idVisiteur_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['idVisiteur'] }}>
-                                                    <input type="hidden" name="id_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['id'] }}>
-                                                    <input type="hidden" name="libelle_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['libelle'] }}>
-                                                    <input type="hidden" name="mois_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['mois']|slice(0,2) }}>
-                                                    <input type="hidden" name="verif_FraisHorsForfait_invalide" value="1">
-                                                    <td style="border: 1px solid #333;text-align: center;"><input type="submit" class="btn btn-danger" value="Invalider"/></td>
-                                                </form>
+
+                                                    <td style="border: 1px solid #333;text-align: center; width:20%;">
+                                                        <form method='POST' id="invalider" action="../comptable/valider">
+                                                        <input type="hidden" name="idVisiteur_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['idVisiteur'] }}>
+                                                        <input type="hidden" name="id_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['id'] }}>
+                                                        <input type="hidden" name="libelle_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['libelle'] }}>
+                                                        <input type="hidden" name="mois_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['mois']|slice(0,2) }}>
+                                                        <input type="hidden" name="verif_FraisHorsForfait_invalide" value="1">
+                                                        <input type="submit" style="justify-content: center" id="invalider" class="btn btn-danger" value="Invalider"/>
+                                                        </form>
+
+                                                        <form method='POST' id="report" action="../comptable/valider">
+                                                        <input type="hidden" name="idVisiteur_FraisHorsForfait_report" value={{ unFraisHorsForfait['idVisiteur'] }}>
+                                                        <input type="hidden" name="id_FraisHorsForfait_report" value={{ unFraisHorsForfait['id'] }}>
+                                                        <input type="hidden" name="libelle_FraisHorsForfait_report" value={{ unFraisHorsForfait['libelle'] }}>
+                                                        <input type="hidden" name="mois_FraisHorsForfait_report" value={{ unFraisHorsForfait['mois']|slice(0,2) }}>
+                                                        <input type="hidden" name="verif_FraisHorsForfait_report" value="1">
+                                                        <input type="submit" style="justify-content: center" id="report" class="btn btn-warning" value="Report"/>
+                                                        </form>
+                                                    </td>
                                             </tr>
                                     </table><br>
                                         <script type="text/javascript">
                                             var montantTotalFraisHorsForfait = montantTotalFraisHorsForfait + {{ unFraisHorsForfait['montant'] }};
+                                            var idVisiteur = {{ unFraisHorsForfait['idVisiteur'] }};
+                                            var mois = {{ unFraisHorsForfait['mois'] }};
                                             function afficherMontantHorsForfait(){
                                                 document.getElementById("montantTotalHorsForfait").innerHTML = "Montant total des frais hors forfait : " + montantTotalFraisHorsForfait + "€";
                                             }
                                             function envoyerMontantValideHorsForfait(){
                                                 document.getElementById("formFraisHorsForfait").value=montantTotalFraisHorsForfait;
+                                            }
+                                            function envoyerIdMois(){
+                                                document.getElementById("formIdFrais").value=idVisiteur;
+                                                document.getElementById("formMoisFrais").value=mois;
                                             }
                                         </script>
                                     {% endfor %}
@@ -139,8 +167,8 @@
                                         <p id="montantTotalForfait"><script type="text/javascript">afficherMontantForfait()</script></p>
                                         <p id="montantTotalHorsForfait"><script type="text/javascript">afficherMontantHorsForfait()</script></p>
                                         <form method='POST' action="../comptable/valider">
-                                            <input type="hidden" name="form_idVisiteurValide" value="{{ listeFraisForfait[0]['idVisiteur'] }}">
-                                            <input type="hidden" name="form_moisValide" value="{{ listeFraisForfait[0]['mois'] }}">
+                                            <input type="hidden" id="formIdFrais" name="form_idVisiteurValide"><script>envoyerIdMois()</script>
+                                            <input type="hidden" id="formMoisFrais" name="form_moisValide"><script>envoyerIdMois()</script>
                                             <input type="hidden" itemtype="number" id="formFraisForfait" name="form_fraisForfaitValide"><script>envoyerMontantValideForfait()</script>
                                             <input type="hidden" itemtype="number" id="formFraisHorsForfait" name="form_fraisHorsForfaitValide"><script>envoyerMontantValideHorsForfait()</script>
                                             <input type="submit" class="btn btn-success" value="Valider les différents frais">
@@ -198,31 +226,13 @@
                     {% else %}
 
                     <!-- Redirection vers la page d'erreur si il n'existe pas de fiche de frais pour le visiteur choisi -->
-                    <!-- {% if idVisiteur is not empty %}
+                    {% if idVisiteur is not empty %}
                         <div class="col-sm d-grip gap-2 col-6 mx-auto" style="margin-top: 75px;">
                             <div class="alert alert-danger" role="alert">
                                 <p> Aucune fiche de frais n'est renseignée pour le visiteur sélectionné</p>
-                                <script type="text/javascript">
-                                    var duree = 5;
-                                    function decompte()
-                                    {
-                                        if(duree <= 1){
-                                            var suffixe = " seconde";
-                                        }else{
-                                            var suffixe = " secondes";
-                                        }
-                                        document.getElementById("decompte").innerHTML= "Vous allez être redirigé vers la page précédente dans " + duree + suffixe;
-                                        duree -= 1;
-                                        setTimeout("decompte();", 1000);
-                                        if(duree == -1){
-                                            document.location.href="/comptable/valider/erreur";
-                                        }
-                                    }
-                                </script>
-                                <p id="decompte"><script type="text/javascript"> decompte() </script></p>
                             </div>
                         </div>
-                    {% endif %} -->
+                    {% endif %}
                     <div class="col py-3">
                         <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center">
                             Selection du Visiteur

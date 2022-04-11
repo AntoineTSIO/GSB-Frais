@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b12af142-8831-4363-9a02-266bd57a9ffe" name="Changes" comment="Mise à jour README.md">
-      <change afterPath="$PROJECT_DIR$/src/Controller/RedirectionController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/comptable/erreurValidationFicheFrais.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/redirection/index.html.twig" afterDir="false" />
+    <list default="true" id="b12af142-8831-4363-9a02-266bd57a9ffe" name="Changes" comment="Fin UC4 - Valider fiche de frais">
+      <change afterPath="$PROJECT_DIR$/templates/comptable/suivrePaiementFicheFrais.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ComptableController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ComptableController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/ConnexionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ConnexionController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/ComptableType.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/VisiteurType.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/RedirectionController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/comptable/erreurValidationFicheFrais.html.twig" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/comptable/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/comptable/index.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/comptable/validerFicheFrais.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/comptable/validerFicheFrais.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/redirection/index.html.twig" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -250,7 +248,14 @@
       <option name="project" value="LOCAL" />
       <updated>1649439268535</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Fin UC4 - Valider fiche de frais">
+      <created>1649669311512</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1649669311512</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -273,6 +278,7 @@
     <MESSAGE value="Corrections Doctrine + Ajout logo" />
     <MESSAGE value="Mise à jour Documentation Technique" />
     <MESSAGE value="Mise à jour README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mise à jour README.md" />
+    <MESSAGE value="Fin UC4 - Valider fiche de frais" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fin UC4 - Valider fiche de frais" />
   </component>
 </project>

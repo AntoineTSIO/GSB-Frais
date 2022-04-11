@@ -1,0 +1,235 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace Comptable{% endblock %}
+
+{% block body %}
+    <!-- SIDEBAR -->
+    <div class="container-fluid overflow-hidden">
+        <div class="row vh-100 overflow-auto">
+            <div class="col-12 col-sm-3 col-xl-2 px-sm-2 px-0 bg-dark d-flex sticky-top">
+                <div class="d-flex flex-sm-column flex-row flex-grow-1 align-items-center align-items-sm-start px-3 pt-2 text-white">
+                <span class="d-flex align-items-center pb-sm-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                <img src="../images/logogsb.png" alt="L'image ne charge pas" width="70" height="35" class="elipse">
+                </span>
+                    <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start" id="menu">
+                        <li class="nav-item">
+                            <a href="/comptable" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Accueil</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" checked>
+                            <a href="/comptable/valider" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Valider fiche de frais</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/comptable/suivre" class="nav-link px-sm-0 px-2">
+                                <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Suivre le paiement des fiches de frais</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="dropdown py-sm-4 mt-sm-auto ms-auto ms-sm-0 flex-shrink-1">
+                        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                            <span class="d-none d-sm-inline mx-1">{{app.session.get('prenom')}} {{app.session.get('nom')}}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                            <li><a class="dropdown-item" href="/deconnecter">Déconnexion</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+    <!-- Zone Affichée à droite de la SIDEBAR -->
+            <div class="col d-flex flex-column h-100">
+                <main>
+                    <div class="col pt-4">
+                        <h3>Suivi du paiement des Fiches de Frais</h3>
+                    </div>
+
+                <!-- Message envoyé lors du remboursement -->
+
+                    {% if varRemboursement is not empty %}
+
+                        <div class="col-sm d-grip gap-2 col-6 mx-auto" style="margin-top: 75px;">
+                            <div class="alert alert-success" role="alert">
+                                <p> Rembousement effectué</p>
+                                <script type="text/javascript">
+                                    var duree = 3;
+                                    function decompte()
+                                    {
+                                        if(duree <= 1){
+                                            var suffixe = " seconde";
+                                        }else{
+                                            var suffixe = " secondes";
+                                        }
+                                        document.getElementById("decompte").innerHTML= "Vous allez être redirigé vers le suivi du paiement des fiches de frais dans " + duree + suffixe;
+                                        duree -= 1;
+                                        setTimeout("decompte();", 1000);
+                                        if(duree == -1){
+                                            document.location.href="/comptable/suivre";
+                                        }
+                                    }
+                                </script>
+                                <p id="decompte"><script type="text/javascript"> decompte() </script></p>
+                            </div>
+                        </div>
+
+                    {% else %}
+
+                <!-- Affichage du détail des frais forfait et hors forfait -->
+
+                    {% if listeFraisForfait is not empty or listeFraisHorsForfait is not empty %}
+                    <div class="col py-3">
+                        <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center">
+                            Détail de la fiche de frais du visiteur {{ listeFraisForfait[0]['idVisiteur'] }} pour le mois {{ listeFraisForfait[0]['mois'] }}
+                        </div>
+                        <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center; margin-top: 3px">
+                            <div class="row">
+                                <div class="col-md-12 well">
+                            <!-- Frais Forfait -->
+                                    {% if listeFraisForfait is not empty %}
+                                        <h3>Détail Frais Forfait</h3>
+                                    {% endif %}
+                                    {% for unFraisForfait in listeFraisForfait %}
+                                        <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
+                                            <thead>
+                                            <tr style="background-color: #333; color: #fff">
+                                                <th>mois</th>
+                                                <th>id Forfait</th>
+                                                <th>quantité</th>
+                                                <th>montant</th>
+                                            </tr>
+                                            </thead>
+                                            <tr>
+                                                <form method='POST' action="../comptable/suivre">
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisForfait['mois']|slice(0,2) }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisForfait['idFraisForfait'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisForfait['quantite'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisForfait['quantite'] * unFraisForfait['montant'] }}</td>
+                                                </form>
+                                            </tr>
+                                        </table><br>
+                                    {% endfor %}
+                            <!-- Frais Hors Forfait -->
+                                    {% if listeFraisHorsForfait is not empty %}
+                                        <br><br>
+                                        <h3>Détail Frais Hors Forfait</h3>
+                                    {% endif %}
+                                    {% for unFraisHorsForfait in listeFraisHorsForfait %}
+                                        <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
+                                            <thead>
+                                            <tr style="background-color: #333; color: #fff">
+                                                <th>mois</th>
+                                                <th>libelle</th>
+                                                <th>date</th>
+                                                <th>montant</th>
+                                            </tr>
+                                            </thead>
+                                            <tr>
+                                                <form method='POST' action="../comptable/suivre">
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['mois']|slice(0,2) }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['libelle'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['date'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['montant'] }}</td>
+                                                </form>
+                                            </tr>
+                                        </table><br>
+                                    {% endfor %}
+                            <!-- Mise en paiement de la Fiche de Frais -->
+                                    {% if idEtat == 'VA' %}
+                                    <br><br>
+                                    <form method='POST' action="../comptable/suivre">
+                                        <input type="hidden" name="mp_idVisiteur" value="{{ listeFraisForfait[0]['idVisiteur'] }}">
+                                        <input type="hidden" name="mp_mois" value="{{ listeFraisForfait[0]['mois'] }}">
+                                        <input type="submit" class="btn btn-success btn-lg" value="Mise en paiement">
+                                    </form>
+                                    {% endif %}
+                            <!-- Remboursement ou annulation de la mise en paiement de la Fiche de Frais -->
+                                    {% if idEtat == 'MP' %}
+                                    <br><br>
+                                    <div class="container">
+                                        <div class="row justify-content-center">
+                                            <div class="col-4">
+                                                <form method='POST' action="../comptable/suivre">
+                                                    <input type="hidden" name="rb_idVisiteur" value="{{ listeFraisForfait[0]['idVisiteur'] }}">
+                                                    <input type="hidden" name="rb_mois" value="{{ listeFraisForfait[0]['mois'] }}">
+                                                    <input type="hidden" name="rb_varRemboursement" value="1">
+                                                    <input type="submit" class="btn btn-success btn-lg" value="Remboursement de la fiche">
+                                                </form>
+                                            </div>
+                                            <div class="col-4">
+                                                <form method='POST' action="../comptable/suivre">
+                                                    <input type="hidden" name="va_idVisiteur" value="{{ listeFraisForfait[0]['idVisiteur'] }}">
+                                                    <input type="hidden" name="va_mois" value="{{ listeFraisForfait[0]['mois'] }}">
+                                                    <input type="submit" class="btn btn-danger btn-lg" value="Annuler la mise en paiement">
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+
+                <!-- Affichage de la liste des fiches de frais validées -->
+
+                    {% if listeFichesFraisValidees is not empty %}
+                    <div class="col py-3">
+                        <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center">
+                            Selection de la Fiche de Frais
+                        </div>
+                        <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center; margin-top: 3px">
+                            <div class="row">
+                                <div class="col-md-12 well">
+                                    <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
+                                        <thead>
+                                        <tr style="background-color: #333; color: #fff">
+                                            <th>idVisiteur</th>
+                                            <th>mois</th>
+                                            <th>nbJustificatifs</th>
+                                            <th>montantValide</th>
+                                            <th>dateModif</th>
+                                            <th>idEtat</th>
+                                            <th> </th>
+                                        </tr>
+                                        </thead>
+                                        {% for uneFiche in listeFichesFraisValidees %}
+                                            <tr>
+                                                <form method='POST' action="../comptable/suivre">
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ uneFiche['idVisiteur'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ uneFiche['mois'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ uneFiche['nbJustificatifs'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ uneFiche['montantValide'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ uneFiche['dateModif'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ uneFiche['libelle'] }}</td>
+                                                    <input type="hidden" name="idVisiteur" value={{ uneFiche['idVisiteur'] }}>
+                                                    <input type="hidden" name="mois" value={{ uneFiche['mois'] }}>
+                                                    <input type="hidden" name="idEtat" value={{ uneFiche['idEtat'] }}>
+                                                    <td style="border: 1px solid #333;text-align: center;"><input type="submit" value="Choisir"/></td>
+                                                </form>
+                                            </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% else %}
+
+                    <h3>Aucune fiche de frais n'est validée ou mise en paiement</h3>
+
+                    {% endif %}
+                    {% endif %}
+                    {% endif %}
+                </main>
+                <footer class="row bg-light py-4 mt-auto">
+                    <div class="col"> © 2022 GSB Frais </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -22,7 +22,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link px-sm-0 px-2">
+                            <a href="/comptable/suivre" class="nav-link px-sm-0 px-2">
                                 <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Suivre le paiement des fiches de frais</span>
                             </a>
                         </li>
@@ -42,8 +42,23 @@
                     <div class="col pt-4">
                         <h3>Espace Comptable</h3>
                     </div>
-                    <div>
-                        <p>Bienvenue sur l'espace de gestion des fiches de frais {{app.session.get('prenom')}} {{app.session.get('nom')}}</p>
+                    <div class="col py-3">
+                        <div style="padding: 5px; text-align: center">
+                            Bienvenue sur votre espace, {{app.session.get('prenom')}} {{app.session.get('nom')}}
+                        </div>
+                        <br><br><br>
+                        <div class="container">
+                            <div class="row justify-content-center" style="text-align: center">
+                                <div class="col-6">
+                                    <h4>Valider une fiche de frais</h4>
+                                    <button type="button justify-content-center" class="btn btn-info" onclick="location.href='/comptable/valider'">Cliquez-ici</button>
+                                </div>
+                                <div class="col-6">
+                                    <h4>Suivre le paiement d'une fiche de frais</h4>
+                                    <button type="button justify-content-center" class="btn btn-info" onclick="location.href='/comptable/suivre'">Cliquez-ici</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </main>
                 <footer class="row bg-light py-4 mt-auto">

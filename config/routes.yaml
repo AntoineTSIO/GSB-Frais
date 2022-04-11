@@ -18,14 +18,10 @@ comptable:
     path: /comptable
     controller: App\Controller\ComptableController::index
 
-# validerFicheFrais:
-#     path: /comptable/valider
-#     controller: App\Controller\ComptableController::validerFicheFrais
-
 validerUneFiche:
     path: /comptable/valider
     controller: App\Controller\ComptableController::validerUneFiche
 
-erreurValidationFicheFrais:
-    path: /comptable/valider/erreur
-    controller: App\Controller\RedirectionController::erreurValidationFicheFrais
+suivreUneFiche:
+    path: /comptable/suivre
+    controller: App\Controller\ComptableController::suivreUneFiche
