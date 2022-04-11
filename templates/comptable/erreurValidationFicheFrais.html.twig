@@ -11,12 +11,12 @@
                 <img src="../images/logogsb.png" alt="L'image ne charge pas" width="70" height="35" class="elipse">
                 </span>
                     <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start" id="menu">
-                        <li class="nav-item" checked>
+                        <li class="nav-item">
                             <a href="/comptable" class="nav-link px-sm-0 px-2">
                                 <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Accueil</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" checked>
                             <a href="/comptable/valider" class="nav-link px-sm-0 px-2">
                                 <i class="fs-5 bi-house"></i><span class="ms-1 d-none d-sm-inline">Valider fiche de frais</span>
                             </a>
@@ -35,16 +35,18 @@
                             <li><a class="dropdown-item" href="/deconnecter">Déconnexion</a></li>
                         </ul>
                     </div>
+
                 </div>
             </div>
             <div class="col d-flex flex-column h-100">
                 <main>
                     <div class="col pt-4">
-                        <h3>Espace Comptable</h3>
+                        <h3>Validation des Fiches de Frais</h3>
                     </div>
-                    <div>
-                        <p>Bienvenue sur l'espace de gestion des fiches de frais {{app.session.get('prenom')}} {{app.session.get('nom')}}</p>
-                    </div>
+
+                    <!-- Erreur : pas de fiche de frais pour le visiteur choisi -->
+
+
                 </main>
                 <footer class="row bg-light py-4 mt-auto">
                     <div class="col"> © 2022 GSB Frais </div>

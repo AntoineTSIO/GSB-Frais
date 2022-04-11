@@ -3,6 +3,7 @@
 {% block title %}Espace Comptable{% endblock %}
 
 {% block body %}
+    <!-- SIDEBAR -->
     <div class="container-fluid overflow-hidden">
         <div class="row vh-100 overflow-auto">
             <div class="col-12 col-sm-3 col-xl-2 px-sm-2 px-0 bg-dark d-flex sticky-top">
@@ -43,23 +44,224 @@
                     <div class="col pt-4">
                         <h3>Validation des Fiches de Frais</h3>
                     </div>
+
+        <!-- Affichage de la liste des frais forfait et hors forfait -->
+
+                    {% if listeFraisForfait is not empty or listeFraisHorsForfait is not empty %}
+                        <script>
+                            var montantTotalFraisForfait = 0;
+                            var montantTotalFraisHorsForfait = 0;
+                        </script>
                     <div class="col py-3">
                         <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center">
-                            Selection de la Fiche a valider
+                            Frais Forfait et Frais Hors Forfait
                         </div>
                         <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center; margin-top: 3px">
                             <div class="row">
                                 <div class="col-md-12 well">
-                                    {{ form_start(formulaire) }}
-                                    {{ form(formulaire) }}
-                                    {{ form_end(formulaire) }}
+                                <!-- Frais Forfait -->
+                                    {% if listeFraisForfait is not empty %}
+                                    <h3>Frais Forfait</h3>
+                                    {% endif %}
+                                    {% for unFraisForfait in listeFraisForfait %}
+                                    <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
+                                        <thead>
+                                        <tr style="background-color: #333; color: #fff">
+                                            <th>mois</th>
+                                            <th>id Forfait</th>
+                                            <th>quantité</th>
+                                            <th>montant</th>
+                                        </tr>
+                                        </thead>
+                                            <tr>
+                                                <form method='POST' action="../comptable/valider">
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisForfait['mois']|slice(0,2) }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisForfait['idFraisForfait'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisForfait['quantite'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisForfait['quantite'] * unFraisForfait['montant'] }}</td>
+                                                </form>
+                                            </tr>
+                                    </table><br>
+                                    <script type="text/javascript">
+                                        var montantTotalFraisForfait = montantTotalFraisForfait + {{ unFraisForfait['quantite'] * unFraisForfait['montant'] }};
+                                        function afficherMontantForfait(){
+                                            document.getElementById("montantTotalForfait").innerHTML = "Montant total des frais forfait : " + montantTotalFraisForfait + "€";
+                                        }
+                                        function envoyerMontantValideForfait(){
+                                            document.getElementById("formFraisForfait").value=montantTotalFraisForfait;
+                                        }
+                                    </script>
+                                    {% endfor %}
+                                <!-- Frais Hors Forfait -->
+                                    {% if listeFraisHorsForfait is not empty %}
+                                    <br><br>
+                                    <h3>Frais Hors Forfait</h3>
+                                    {% endif %}
+                                    {% for unFraisHorsForfait in listeFraisHorsForfait %}
+                                    <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
+                                        <thead>
+                                        <tr style="background-color: #333; color: #fff">
+                                            <th>mois</th>
+                                            <th>libelle</th>
+                                            <th>date</th>
+                                            <th>montant</th>
+                                            <th> </th>
+                                        </tr>
+                                        </thead>
+                                            <tr>
+                                                <form method='POST' action="../comptable/valider">
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['mois']|slice(0,2) }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['libelle'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['date'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['montant'] }}</td>
+                                                    <input type="hidden" name="idVisiteur_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['idVisiteur'] }}>
+                                                    <input type="hidden" name="id_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['id'] }}>
+                                                    <input type="hidden" name="libelle_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['libelle'] }}>
+                                                    <input type="hidden" name="mois_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['mois']|slice(0,2) }}>
+                                                    <input type="hidden" name="verif_FraisHorsForfait_invalide" value="1">
+                                                    <td style="border: 1px solid #333;text-align: center;"><input type="submit" class="btn btn-danger" value="Invalider"/></td>
+                                                </form>
+                                            </tr>
+                                    </table><br>
+                                        <script type="text/javascript">
+                                            var montantTotalFraisHorsForfait = montantTotalFraisHorsForfait + {{ unFraisHorsForfait['montant'] }};
+                                            function afficherMontantHorsForfait(){
+                                                document.getElementById("montantTotalHorsForfait").innerHTML = "Montant total des frais hors forfait : " + montantTotalFraisHorsForfait + "€";
+                                            }
+                                            function envoyerMontantValideHorsForfait(){
+                                                document.getElementById("formFraisHorsForfait").value=montantTotalFraisHorsForfait;
+                                            }
+                                        </script>
+                                    {% endfor %}
+                                <!-- Validation de la Fiche de Frais -->
+                                    <br><br>
+                                    <h3>Récapitulatif des frais</h3>
+                                        <p id="montantTotalForfait"><script type="text/javascript">afficherMontantForfait()</script></p>
+                                        <p id="montantTotalHorsForfait"><script type="text/javascript">afficherMontantHorsForfait()</script></p>
+                                        <form method='POST' action="../comptable/valider">
+                                            <input type="hidden" name="form_idVisiteurValide" value="{{ listeFraisForfait[0]['idVisiteur'] }}">
+                                            <input type="hidden" name="form_moisValide" value="{{ listeFraisForfait[0]['mois'] }}">
+                                            <input type="hidden" itemtype="number" id="formFraisForfait" name="form_fraisForfaitValide"><script>envoyerMontantValideForfait()</script>
+                                            <input type="hidden" itemtype="number" id="formFraisHorsForfait" name="form_fraisHorsForfaitValide"><script>envoyerMontantValideHorsForfait()</script>
+                                            <input type="submit" class="btn btn-success" value="Valider les différents frais">
+                                        </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {% else %}
+        <!-- Affichage de la liste des fiches de frais -->
+
+                    {% if listeFicheFrais is not empty %}
+                        <div class="col py-3">
+                            <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center">
+                                Selection de la Fiche de Frais
+                            </div>
+                            <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center; margin-top: 3px">
+                                <div class="row">
+                                    <div class="col-md-12 well">
+                                        <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
+                                            <thead>
+                                            <tr style="background-color: #333; color: #fff">
+                                                <th>idVisiteur</th>
+                                                <th>mois</th>
+                                                <th>nbJustificatifs</th>
+                                                <th>montantValide</th>
+                                                <th>dateModif</th>
+                                                <th>idEtat</th>
+                                                <th> </th>
+                                            </tr>
+                                            </thead>
+                                            {% for uneFiche in listeFicheFrais %}
+                                                    <tr>
+                                                        <form method='POST' action="../comptable/valider">
+                                                            <td style="border: 1px solid #333;text-align: center;">{{ uneFiche['idVisiteur'] }}</td>
+                                                            <td style="border: 1px solid #333;text-align: center;">{{ uneFiche['mois'] }}</td>
+                                                            <td style="border: 1px solid #333;text-align: center;">{{ uneFiche['nbJustificatifs'] }}</td>
+                                                            <td style="border: 1px solid #333;text-align: center;">{{ uneFiche['montantValide'] }}</td>
+                                                            <td style="border: 1px solid #333;text-align: center;">{{ uneFiche['dateModif'] }}</td>
+                                                            <td style="border: 1px solid #333;text-align: center;">{{ uneFiche['idEtat'] }}</td>
+                                                            <input type="hidden" name="idVisiteur" value={{ uneFiche['idVisiteur'] }}>
+                                                            <input type="hidden" name="mois" value={{ uneFiche['mois'] }}>
+                                                            <td style="border: 1px solid #333;text-align: center;"><input type="submit" value="Choisir"/></td>
+                                                        </form>
+                                                    </tr>
+                                                {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+        <!-- Affichage de la liste des visiteurs -->
+
+                    {% else %}
+
+                    <!-- Redirection vers la page d'erreur si il n'existe pas de fiche de frais pour le visiteur choisi -->
+                    <!-- {% if idVisiteur is not empty %}
+                        <div class="col-sm d-grip gap-2 col-6 mx-auto" style="margin-top: 75px;">
+                            <div class="alert alert-danger" role="alert">
+                                <p> Aucune fiche de frais n'est renseignée pour le visiteur sélectionné</p>
+                                <script type="text/javascript">
+                                    var duree = 5;
+                                    function decompte()
+                                    {
+                                        if(duree <= 1){
+                                            var suffixe = " seconde";
+                                        }else{
+                                            var suffixe = " secondes";
+                                        }
+                                        document.getElementById("decompte").innerHTML= "Vous allez être redirigé vers la page précédente dans " + duree + suffixe;
+                                        duree -= 1;
+                                        setTimeout("decompte();", 1000);
+                                        if(duree == -1){
+                                            document.location.href="/comptable/valider/erreur";
+                                        }
+                                    }
+                                </script>
+                                <p id="decompte"><script type="text/javascript"> decompte() </script></p>
+                            </div>
+                        </div>
+                    {% endif %} -->
+                    <div class="col py-3">
+                        <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center">
+                            Selection du Visiteur
+                        </div>
+                        <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center; margin-top: 3px">
+                            <div class="row">
+                                <div class="col-md-12 well">
+                                    <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
+                                        <thead>
+                                            <tr style="background-color: #333; color: #fff">
+                                                <th>Numéro</th>
+                                                <th>Nom</th>
+                                                <th>Prenom</th>
+                                                <th> </th>
+                                            </tr>
+                                        </thead>
+                                        {% if listeVisiteurs is not empty %}
+                                        {% for unVisiteur in listeVisiteurs %}
+                                        <tr>
+                                            <form method='POST' action="../comptable/valider">
+                                                <td style="border: 1px solid #333;text-align: center;">{{ unVisiteur['id'] }}</td>
+                                                <td style="border: 1px solid #333;text-align: center;">{{ unVisiteur['nom'] }}</td>
+                                                <td style="border: 1px solid #333;text-align: center;">{{ unVisiteur['prenom'] }}</td>
+                                                <input type="hidden" name="idVisiteur" value={{ unVisiteur['id'] }}>
+                                                <td style="border: 1px solid #333;text-align: center;"><input type="submit" value="Choisir"/></td>
+                                            </form>
+                                        </tr>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endif %}
                 </main>
                 <footer class="row bg-light py-4 mt-auto">
-                    <div class="col"> © 2021 GSB Frais </div>
+                    <div class="col"> © 2022 GSB Frais </div>
                 </footer>
             </div>
         </div>

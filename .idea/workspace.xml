@@ -2,7 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b12af142-8831-4363-9a02-266bd57a9ffe" name="Changes" comment="Mise à jour README.md">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Controller/RedirectionController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/comptable/erreurValidationFicheFrais.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/redirection/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ComptableController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ComptableController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/ConnexionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ConnexionController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/ComptableType.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Form/VisiteurType.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/comptable/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/comptable/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/comptable/validerFicheFrais.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/comptable/validerFicheFrais.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +43,11 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/Controller/ComptableController.php" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/config/routes.yaml" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/templates/comptable/validerFicheFrais.html.twig" root0="FORCE_HIGHLIGHTING" root1="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -200,7 +215,42 @@
       <option name="project" value="LOCAL" />
       <updated>1649422744977</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Mise à jour README.md">
+      <created>1649422850805</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1649422850805</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Mise à jour Documentation Technique">
+      <created>1649431645178</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1649431645178</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Mise à jour README.md">
+      <created>1649431757504</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1649431757504</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Mise à jour README.md">
+      <created>1649431974929</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1649431974929</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Mise à jour README.md">
+      <created>1649439268535</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1649439268535</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -221,6 +271,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="```Changement ordinateur hôte```" />
     <MESSAGE value="Corrections Doctrine + Ajout logo" />
+    <MESSAGE value="Mise à jour Documentation Technique" />
     <MESSAGE value="Mise à jour README.md" />
     <option name="LAST_COMMIT_MESSAGE" value="Mise à jour README.md" />
   </component>

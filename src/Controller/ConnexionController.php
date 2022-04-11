@@ -54,6 +54,7 @@ class ConnexionController extends AbstractController
                 $session->set('login', $comptable->getLogin());
                 $session->set('nom', $comptable->getNom());
                 $session->set('prenom', $comptable->getPrenom());
+                $session->set('idComptable', $comptable->getId());
                 return $this->redirect('/comptable');
             }
         }

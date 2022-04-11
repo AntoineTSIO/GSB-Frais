@@ -25,3 +25,7 @@ comptable:
 validerUneFiche:
     path: /comptable/valider
     controller: App\Controller\ComptableController::validerUneFiche
+
+erreurValidationFicheFrais:
+    path: /comptable/valider/erreur
+    controller: App\Controller\RedirectionController::erreurValidationFicheFrais
