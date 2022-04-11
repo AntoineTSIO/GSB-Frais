@@ -154,7 +154,7 @@
           if(moisActuelle<10){
             moisActuelle = "0" + moisActuelle;
           }
-          var jourActuelle = dateActuelle.getDay();
+          var jourActuelle = dateActuelle.getDate();
           if(jourActuelle<10){
             jourActuelle = "0" + jourActuelle;
           }
@@ -260,13 +260,14 @@ function validerCreationFraisHorsForfait(){
     if (document.formSaisieCreationFraisHorsForfait.date.value == ""){
       document.getElementById("errDate").style.display = "";
       document.getElementById("dateErrone").style.display = "none";
-      
-      
     }else if(dateEntrer < dateDeTest || dateEntrer > dateActuelle){
       document.getElementById("dateErrone").style.display = "";
       document.getElementById("errDate").style.display = "none";
-      
+    }else{
+      document.getElementById("dateErrone").style.display = "none";
+      document.getElementById("errDate").style.display = "none";
     }
+    
     if (document.formSaisieCreationFraisHorsForfait.montant.value == ""){
       document.getElementById("errMontant").style.display = "";
     }else{
