@@ -78,6 +78,7 @@ class ComptableController extends AbstractController
         $mois_FraisHorsForfait_invalide = $request->get('mois_FraisHorsForfait_invalide');
         $verif_FraisHorsForfait_invalide = $request->get('verif_FraisHorsForfait_invalide');
         $idVisiteur_FraisHorsForfait_invalide = $request->get('idVisiteur_FraisHorsForfait_invalide');
+        $motifRefus_FraisHorsForfait_invalide = $request->get('motif_refus_FraisHorsForfait_invalide');
 
         $anneeActuelle = date('Y');
         $dateActuelle = date("y-m-d");
@@ -99,7 +100,7 @@ class ComptableController extends AbstractController
             }
         }
 
-        $requeteModifFraisHorsForfait = $connexion->query("UPDATE LigneFraisHorsForfait SET libelle ='".$libelle_FraisHorsForfait_invalide."', mois ='".$moisModifFraisHorsForfait."' WHERE id ='".$id_FraisHorsForfait_invalide."'");
+        $requeteModifFraisHorsForfait = $connexion->query("UPDATE LigneFraisHorsForfait SET libelle ='".$libelle_FraisHorsForfait_invalide."', mois ='".$moisModifFraisHorsForfait."', motif_refus ='".$motifRefus_FraisHorsForfait_invalide."' WHERE id ='".$id_FraisHorsForfait_invalide."'");
         $requeteModifFraisHorsForfait->execute();
         $requeteModifDateModif = $connexion->query("UPDATE FicheFrais SET dateModif ='".$dateActuelle."'where mois='".$moisModifFraisHorsForfait."' AND idVisiteur = '".$idVisiteur_FraisHorsForfait_invalide."'");
         $requeteModifDateModif->execute();
@@ -138,15 +139,15 @@ class ComptableController extends AbstractController
         $requeteReportDateModif->execute();
 
 
-        //Invalidation d'un frais hors forfait
+        //Validation de la fiche de frais
+        $dateActuelleValidation = date("y-m-d");
         $form_idVisiteurValide = $request->get('form_idVisiteurValide');
         $form_moisValide = $request->get('form_moisValide');
         $form_fraisForfaitValide = (double)$request->get('form_fraisForfaitValide');
         $form_fraisHorsForfaitValide = (double)$request->get('form_fraisHorsForfaitValide');
         $montantValide = $form_fraisForfaitValide + $form_fraisHorsForfaitValide;
-        $requeteValidationFicheFrais = $connexion->query("UPDATE FicheFrais SET idEtat = 'VA' , montantValide = '".$montantValide."'WHERE idVisiteur ='".$form_idVisiteurValide."' AND mois = '".$form_moisValide."'");
+        $requeteValidationFicheFrais = $connexion->query("UPDATE FicheFrais SET idEtat = 'VA' , montantValide = '".$montantValide."', dateModif = '".$dateActuelleValidation."'WHERE idVisiteur ='".$form_idVisiteurValide."' AND mois = '".$form_moisValide."'");
         $requeteValidationFicheFrais->execute();
-
 
 
 
@@ -193,23 +194,26 @@ class ComptableController extends AbstractController
 
 
         //Mise en paiement de la fiche de frais
+        $dateActuelleMP = date("y-m-d");
         $mp_idVisiteur = $request->get('mp_idVisiteur');
         $mp_mois = $request->get('mp_mois');
-        $requeteMiseEnPaiementFicheFrais = $connexion->query("UPDATE FicheFrais SET idEtat = 'MP' WHERE idVisiteur ='".$mp_idVisiteur."' AND mois = '".$mp_mois."'");
+        $requeteMiseEnPaiementFicheFrais = $connexion->query("UPDATE FicheFrais SET idEtat = 'MP', dateModif = '".$dateActuelleMP."' WHERE idVisiteur ='".$mp_idVisiteur."' AND mois = '".$mp_mois."'");
         $requeteMiseEnPaiementFicheFrais->execute();
 
         //Remboursement de la fiche de frais
+        $dateActuelleRB = date("y-m-d");
         $rb_idVisiteur = $request->get('rb_idVisiteur');
         $rb_mois = $request->get('rb_mois');
         $varRemboursement = $request->get('rb_varRemboursement');
-        $requeteRemboursementFicheFrais = $connexion->query("UPDATE FicheFrais SET idEtat = 'RB' WHERE idVisiteur ='".$rb_idVisiteur."' AND mois = '".$rb_mois."'");
+        $requeteRemboursementFicheFrais = $connexion->query("UPDATE FicheFrais SET idEtat = 'RB', dateModif = '".$dateActuelleRB."' WHERE idVisiteur ='".$rb_idVisiteur."' AND mois = '".$rb_mois."'");
         $requeteRemboursementFicheFrais->execute();
 
 
-        //Annuler la ise en paiement de la fiche de frais
+        //Annuler la Mise en paiement de la fiche de frais
+        $dateActuelleVA = date("y-m-d");
         $va_idVisiteur = $request->get('va_idVisiteur');
         $va_mois = $request->get('va_mois');
-        $requeteAnnulerMiseEnPaiementFicheFrais = $connexion->query("UPDATE FicheFrais SET idEtat = 'VA' WHERE idVisiteur ='".$va_idVisiteur."' AND mois = '".$va_mois."'");
+        $requeteAnnulerMiseEnPaiementFicheFrais = $connexion->query("UPDATE FicheFrais SET idEtat = 'VA', dateModif = '".$dateActuelleVA."' WHERE idVisiteur ='".$va_idVisiteur."' AND mois = '".$va_mois."'");
         $requeteAnnulerMiseEnPaiementFicheFrais->execute();
 
 

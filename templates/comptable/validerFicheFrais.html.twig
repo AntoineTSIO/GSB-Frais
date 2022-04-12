@@ -48,11 +48,18 @@
         <!-- Affichage de la liste des frais forfait et hors forfait -->
 
                     {% if listeFraisForfait is not empty or listeFraisHorsForfait is not empty %}
+                        {% if listeFraisForfait is not empty %}
+                            {% set idVisiteur = listeFraisForfait[0]['idVisiteur'] %}
+                            {% set mois = listeFraisForfait[0]['mois'] %}
+                        {% endif %}
+                        {% if listeFraisHorsForfait is not empty %}
+                            {% set idVisiteur = listeFraisHorsForfait[0]['idVisiteur'] %}
+                            {% set mois = listeFraisHorsForfait[0]['mois'] %}
+                        {% endif %}
+
                         <script>
-                            var montantTotalFraisForfait = 0;
-                            var montantTotalFraisHorsForfait = 0;
-                            var idVisiteur = "";
-                            var mois = "";
+                            var montantTotalFraisForfait = 0.00;
+                            var montantTotalFraisHorsForfait = 0.00;
                         </script>
                     <div class="col py-3">
                         <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center">
@@ -66,7 +73,7 @@
                                     <h3>Frais Forfait</h3>
                                     {% endif %}
                                     {% for unFraisForfait in listeFraisForfait %}
-                                    <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
+                                        <table style="border: solid;margin: 0 auto auto auto;width: 70%; text-align: center;">
                                         <thead>
                                         <tr style="background-color: #333; color: #fff">
                                             <th>mois</th>
@@ -86,17 +93,11 @@
                                     </table><br>
                                     <script type="text/javascript">
                                         var montantTotalFraisForfait = montantTotalFraisForfait + {{ unFraisForfait['quantite'] * unFraisForfait['montant'] }};
-                                        var idVisiteur = {{ unFraisForfait['idVisiteur'] }};
-                                        var mois = {{ unFraisForfait['mois'] }};
                                         function afficherMontantForfait(){
                                             document.getElementById("montantTotalForfait").innerHTML = "Montant total des frais forfait : " + montantTotalFraisForfait + "€";
                                         }
                                         function envoyerMontantValideForfait(){
                                             document.getElementById("formFraisForfait").value=montantTotalFraisForfait;
-                                        }
-                                        function envoyerIdMois(){
-                                            document.getElementById("formIdFrais").value=idVisiteur;
-                                            document.getElementById("formMoisFrais").value=mois;
                                         }
                                     </script>
                                     {% endfor %}
@@ -111,28 +112,23 @@
                                         <tr style="background-color: #333; color: #fff">
                                             <th>mois</th>
                                             <th>libelle</th>
+                                            <th>motif refus</th>
                                             <th>date</th>
                                             <th>montant</th>
                                             <th> </th>
                                         </tr>
                                         </thead>
                                             <tr>
-
-
                                                     <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['mois']|slice(0,2) }}</td>
                                                     <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['libelle'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['motif_refus'] }}</td>
                                                     <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['date'] }}</td>
                                                     <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['montant'] }}</td>
 
                                                     <td style="border: 1px solid #333;text-align: center; width:20%;">
-                                                        <form method='POST' id="invalider" action="../comptable/valider">
-                                                        <input type="hidden" name="idVisiteur_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['idVisiteur'] }}>
-                                                        <input type="hidden" name="id_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['id'] }}>
-                                                        <input type="hidden" name="libelle_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['libelle'] }}>
-                                                        <input type="hidden" name="mois_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['mois']|slice(0,2) }}>
-                                                        <input type="hidden" name="verif_FraisHorsForfait_invalide" value="1">
-                                                        <input type="submit" style="justify-content: center" id="invalider" class="btn btn-danger" value="Invalider"/>
-                                                        </form>
+                                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modal_refus">
+                                                            Invalider
+                                                        </button>
 
                                                         <form method='POST' id="report" action="../comptable/valider">
                                                         <input type="hidden" name="idVisiteur_FraisHorsForfait_report" value={{ unFraisHorsForfait['idVisiteur'] }}>
@@ -145,21 +141,40 @@
                                                     </td>
                                             </tr>
                                     </table><br>
-                                        <script type="text/javascript">
-                                            var montantTotalFraisHorsForfait = montantTotalFraisHorsForfait + {{ unFraisHorsForfait['montant'] }};
-                                            var idVisiteur = {{ unFraisHorsForfait['idVisiteur'] }};
-                                            var mois = {{ unFraisHorsForfait['mois'] }};
-                                            function afficherMontantHorsForfait(){
-                                                document.getElementById("montantTotalHorsForfait").innerHTML = "Montant total des frais hors forfait : " + montantTotalFraisHorsForfait + "€";
-                                            }
-                                            function envoyerMontantValideHorsForfait(){
-                                                document.getElementById("formFraisHorsForfait").value=montantTotalFraisHorsForfait;
-                                            }
-                                            function envoyerIdMois(){
-                                                document.getElementById("formIdFrais").value=idVisiteur;
-                                                document.getElementById("formMoisFrais").value=mois;
-                                            }
-                                        </script>
+                                    <script type="text/javascript">
+                                        var montantTotalFraisHorsForfait = montantTotalFraisHorsForfait + {{ unFraisHorsForfait['montant'] }};
+                                        function afficherMontantHorsForfait(){
+                                            document.getElementById("montantTotalHorsForfait").innerHTML = "Montant total des frais hors forfait : " + montantTotalFraisHorsForfait + "€";
+                                        }
+                                        function envoyerMontantValideHorsForfait(){
+                                            document.getElementById("formFraisHorsForfait").value=montantTotalFraisHorsForfait;
+                                        }
+                                    </script>
+                            <!-- Fenêtre pop-up permettant la justification du refus d'un frais hors forfait -->
+                                    <div class="modal fade" id="modal_refus" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Refus d'un Frais Hors Forfait</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form method='POST' id="invalider" action="../comptable/valider">
+                                                    <div class="modal-body">
+                                                        <input type="hidden" name="idVisiteur_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['idVisiteur'] }}>
+                                                        <input type="hidden" name="id_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['id'] }}>
+                                                        <input type="hidden" name="libelle_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['libelle'] }}>
+                                                        <input type="hidden" name="mois_FraisHorsForfait_invalide" value={{ unFraisHorsForfait['mois']|slice(0,2) }}>
+                                                        <input type="hidden" name="verif_FraisHorsForfait_invalide" value="1">
+                                                        <input type="text" name="motif_refus_FraisHorsForfait_invalide">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Annuler</button>
+                                                        <input type="submit" style="justify-content: center" id="invalider" class="btn btn-success" value="Valider le refus"/>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% endfor %}
                                 <!-- Validation de la Fiche de Frais -->
                                     <br><br>
@@ -167,8 +182,8 @@
                                         <p id="montantTotalForfait"><script type="text/javascript">afficherMontantForfait()</script></p>
                                         <p id="montantTotalHorsForfait"><script type="text/javascript">afficherMontantHorsForfait()</script></p>
                                         <form method='POST' action="../comptable/valider">
-                                            <input type="hidden" id="formIdFrais" name="form_idVisiteurValide"><script>envoyerIdMois()</script>
-                                            <input type="hidden" id="formMoisFrais" name="form_moisValide"><script>envoyerIdMois()</script>
+                                            <input type="hidden" id="formIdFrais" name="form_idVisiteurValide" value="{{ idVisiteur }}">
+                                            <input type="hidden" id="formMoisFrais" name="form_moisValide" value="{{ mois }}">
                                             <input type="hidden" itemtype="number" id="formFraisForfait" name="form_fraisForfaitValide"><script>envoyerMontantValideForfait()</script>
                                             <input type="hidden" itemtype="number" id="formFraisHorsForfait" name="form_fraisHorsForfaitValide"><script>envoyerMontantValideHorsForfait()</script>
                                             <input type="submit" class="btn btn-success" value="Valider les différents frais">

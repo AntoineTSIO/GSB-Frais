@@ -80,9 +80,6 @@
 
                     {% if listeFraisForfait is not empty or listeFraisHorsForfait is not empty %}
                     <div class="col py-3">
-                        <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center">
-                            Détail de la fiche de frais du visiteur {{ listeFraisForfait[0]['idVisiteur'] }} pour le mois {{ listeFraisForfait[0]['mois'] }}
-                        </div>
                         <div class="bg-light" style="border: 3px solid black; padding: 5px; text-align: center; margin-top: 3px">
                             <div class="row">
                                 <div class="col-md-12 well">
@@ -121,6 +118,7 @@
                                             <tr style="background-color: #333; color: #fff">
                                                 <th>mois</th>
                                                 <th>libelle</th>
+                                                <th>motif refus</th>
                                                 <th>date</th>
                                                 <th>montant</th>
                                             </tr>
@@ -129,6 +127,7 @@
                                                 <form method='POST' action="../comptable/suivre">
                                                     <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['mois']|slice(0,2) }}</td>
                                                     <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['libelle'] }}</td>
+                                                    <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['motif_refus'] }}</td>
                                                     <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['date'] }}</td>
                                                     <td style="border: 1px solid #333;text-align: center;">{{ unFraisHorsForfait['montant'] }}</td>
                                                 </form>
@@ -139,8 +138,14 @@
                                     {% if idEtat == 'VA' %}
                                     <br><br>
                                     <form method='POST' action="../comptable/suivre">
-                                        <input type="hidden" name="mp_idVisiteur" value="{{ listeFraisForfait[0]['idVisiteur'] }}">
-                                        <input type="hidden" name="mp_mois" value="{{ listeFraisForfait[0]['mois'] }}">
+                                        {% if listeFraisForfait is not empty %}
+                                            <input type="hidden" name="mp_idVisiteur" value="{{ listeFraisForfait[0]['idVisiteur'] }}">
+                                            <input type="hidden" name="mp_mois" value="{{ listeFraisForfait[0]['mois'] }}">
+                                        {% endif %}
+                                        {% if listeFraisForfait is empty %}
+                                            <input type="hidden" name="mp_idVisiteur" value="{{ listeFraisHorsForfait[0]['idVisiteur'] }}">
+                                            <input type="hidden" name="mp_mois" value="{{ listeFraisHorsForfait[0]['mois'] }}">
+                                        {% endif %}
                                         <input type="submit" class="btn btn-success btn-lg" value="Mise en paiement">
                                     </form>
                                     {% endif %}
@@ -151,16 +156,28 @@
                                         <div class="row justify-content-center">
                                             <div class="col-4">
                                                 <form method='POST' action="../comptable/suivre">
+                                                    {% if listeFraisForfait is not empty %}
                                                     <input type="hidden" name="rb_idVisiteur" value="{{ listeFraisForfait[0]['idVisiteur'] }}">
                                                     <input type="hidden" name="rb_mois" value="{{ listeFraisForfait[0]['mois'] }}">
+                                                    {% endif %}
+                                                    {% if listeFraisForfait is empty %}
+                                                        <input type="hidden" name="rb_idVisiteur" value="{{ listeFraisHorsForfait[0]['idVisiteur'] }}">
+                                                        <input type="hidden" name="rb_mois" value="{{ listeFraisHorsForfait[0]['mois'] }}">
+                                                    {% endif %}
                                                     <input type="hidden" name="rb_varRemboursement" value="1">
                                                     <input type="submit" class="btn btn-success btn-lg" value="Remboursement de la fiche">
                                                 </form>
                                             </div>
                                             <div class="col-4">
                                                 <form method='POST' action="../comptable/suivre">
-                                                    <input type="hidden" name="va_idVisiteur" value="{{ listeFraisForfait[0]['idVisiteur'] }}">
-                                                    <input type="hidden" name="va_mois" value="{{ listeFraisForfait[0]['mois'] }}">
+                                                    {% if listeFraisForfait is not empty %}
+                                                        <input type="hidden" name="va_idVisiteur" value="{{ listeFraisForfait[0]['idVisiteur'] }}">
+                                                        <input type="hidden" name="va_mois" value="{{ listeFraisForfait[0]['mois'] }}">
+                                                    {% endif %}
+                                                    {% if listeFraisForfait is empty %}
+                                                        <input type="hidden" name="va_idVisiteur" value="{{ listeFraisHorsForfait[0]['idVisiteur'] }}">
+                                                        <input type="hidden" name="va_mois" value="{{ listeFraisHorsForfait[0]['mois'] }}">
+                                                    {% endif %}
                                                     <input type="submit" class="btn btn-danger btn-lg" value="Annuler la mise en paiement">
                                                 </form>
                                             </div>
