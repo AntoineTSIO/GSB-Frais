@@ -1,6 +1,6 @@
 # GSB-Frais
 <p align="center">
-    <img src="public/images/logogsb.png" width="250px"/>
+    <img src="https://github.com/AntoineTSIO/GSB-Frais/blob/comptable/public/images/logogsb.png" width="250px"/>
 </p>
 
 [![Symfony 6](https://img.shields.io/badge/Symfony-6.0.6-e5e8e4.svg?style=flat-square&logo=symfony)](https://symfony.com/5)
@@ -24,8 +24,8 @@
 
 ## Visiteur et Comptable
 L'application étant scindée en deux parties, visiteurs et comptable, ceci à donc nécessité un travaille sur plusieurs branches dont voici les liens :
-* [Partie Visiteur](https://github.com/AntoineTSIO/GSB-Frais/tree/main.git)
-* [Partie Comptable](https://github.com/AntoineTSIO/GSB-Frais/tree/comptable.git)
+* [Partie Visiteur](https://github.com/AntoineTSIO/GSB-Frais/tree/main)
+* [Partie Comptable](https://github.com/AntoineTSIO/GSB-Frais/tree/comptable)
 
 ## Base de données
 
